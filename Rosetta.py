@@ -609,8 +609,11 @@ class Window(QtGui.QMainWindow):
 
     # terminate application on shortcut keys
     def quit (self):
+        self.deleteLater()
         self.close()
         sys.exit()
+
+    # def closeEvent(self, event):
 
     # initialize the preference files
     def initPref(self):
@@ -762,7 +765,7 @@ class Window(QtGui.QMainWindow):
                             if (not (str(row).__contains__('Comments:'))) and (x is False):
                                 import_temp_time.append((float(row[0])) * 1000)
                                 import_temp.append(float(row[1]))
-                                import_ai.append(float(row[2]))
+                                import_air.append(float(row[2]))
                                 import_temp_fcrack.append(float(row[3]))
                                 import_temp_scrack.append(float(row[4]))
                                 import_temp_tp.append(float(row[5]))
@@ -931,7 +934,7 @@ class Window(QtGui.QMainWindow):
             temp_writer = csv.writer(export_tempFile, dialect='excel')
             roc_writer = csv.writer(export_rocFile, dialect='excel')
             try:
-                roc_writer.writerow(['Time', 'RoC', 'Gas','Air' 'First' 'Crack Second', 'Crack Turning Point', 'Drop Out'])
+                roc_writer.writerow(['Time', 'RoC', 'Gas', 'Air' , 'First Crack' , 'Second Crack','Turning Point', 'Drop Out'])
                 temp_writer.writerow(['Time', 'Temp', 'Air', 'First Crack', 'Second Crack', 'Turing Point', 'Drop Out'])
 
                 for i in range(0, (len(self.temp_data) - 1)):
@@ -1128,25 +1131,24 @@ class Window(QtGui.QMainWindow):
     
 if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
-    splash_pix = QPixmap((os.path.expanduser("~/Roastery/loading.png")))
-    splash = QtGui.QSplashScreen(splash_pix)
-    splash.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint)
+    splash = QtGui.QSplashScreen(QPixmap((os.path.expanduser("~/Roastery/loading.png"))))
     QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
-    splash.setMask(splash_pix.mask())
-    splash.show()
-    app.processEvents()
+    splash.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint)
 
-    time.sleep(2)
-    print ("Main")
+    splash.show()
 
 
     window = Window()
-    splash.finish(window)
+    # window.connect()
+    app.processEvents()
+
+    splash.finish(window.connect())
+
     QtGui.QApplication.restoreOverrideCursor()
-    window.connect()
-    window.show()
     app.setApplicationName('Roastery')
     os.system("defaults write com.SVT.Roastery NSAppSleepDisabled -bool YES")
+    window.show()
+
 
     sys.exit(app.exec_())
   
