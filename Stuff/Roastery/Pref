@@ -1,0 +1,5 @@
+sampling_interval =1000.0
+rocMethod =self
+delta =7.0
+refresh_rate =210.0
+temp_smooth=True
