@@ -1,9 +1,14 @@
 from pyqtgraph.Qt import QtGui, QtCore
 from PyQt4.QtGui import QPixmap
-from PyQt4.QtCore import QObject,pyqtSignal
 import numpy as np
 import sys
-import sys
+import pyqtgraph as pg
+import csv
+import os
+from os.path import expanduser
+import datetime
+import time
+import gc
 
 sys.path.insert(0, '/home/misha/Google Drive/PycharmProjects/Rosetta-November2016/Dialogs')
 sys.path.insert(0, '/home/misha/Google Drive/PycharmProjects/Rosetta-November2016/Threads')
@@ -12,20 +17,12 @@ sys.path.insert(0, '/home/misha/Google Drive/PycharmProjects/Rosetta-November201
 sys.path.insert(0, '/home/misha/Google Drive/PycharmProjects/Rosetta-November2016/MultiWindow')
 
 
-
 from RocDialog import RocDialog
 from Dock_Widget import Dock_Widget
 from TimeAxisItem import TimeAxisItem
 from MultiWindows import MultiWindows
 from SerialThread import SerialThread
 from BorderLessDiaglogs import BorderLessDiaglogs
-import pyqtgraph as pg
-import csv
-import os
-from os.path import expanduser
-import datetime
-import time
-import gc
 from ChildWindow import ChildWindow
 from GrapherThread import GrapherThread
 from RecoveryThread import RecoveryThread
