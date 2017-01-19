@@ -6,36 +6,7 @@
     <bookmark url="file://$PROJECT_DIR$/Rosetta.py" line="1011" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9b580adc-b916-4472-bfc6-cd978779648f" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/BorderLessDiaglogs.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ChildWindow.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Dock_Widget.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/End_Dialog.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/GrapherThread.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Info.plist" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/MultiWindows.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/PortChecker.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/RecoveryThread.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Roastery/Pref" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Roastery/RoastPref" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Roastery/loading.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/RocDialog.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SerialThread.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/TimeAxisItem.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/icon.icns" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/icon.ico" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/loading.gif" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/loading.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/loading.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/rosetta/.idea/encodings.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/rosetta/.idea/misc.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/rosetta/.idea/modules.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/rosetta/.idea/rosetta.iml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/rosetta/.idea/workspace.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/rosetta/rosetta.ino" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Rosetta.py" afterPath="$PROJECT_DIR$/Rosetta.py" />
-    </list>
+    <list default="true" id="9b580adc-b916-4472-bfc6-cd978779648f" name="Default" comment="" />
     <ignored path="Rosetta.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/dataSources.local.xml" />
