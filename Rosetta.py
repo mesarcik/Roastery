@@ -7,6 +7,7 @@ from Dock_Widget import Dock_Widget
 from TimeAxisItem import TimeAxisItem
 from MultiWindows import MultiWindows
 from SerialThread import SerialThread
+from BorderLessDiaglogs import BorderLessDiaglogs
 import pyqtgraph as pg
 import pyqtgraph.exporters
 import sys
@@ -51,7 +52,7 @@ current_bean =""
 class Window(QtGui.QMainWindow):
     #initilize main window
     def __init__(self):
-        QtGui.QMainWindow.__init__(self, None, QtCore.Qt.WindowStaysOnTopHint)
+        QtGui.QMainWindow.__init__(self, None) #, QtCore.Qt.WindowStaysOnTopHint
 
         # super(Window, self).__init__()
         self.first = False
@@ -761,7 +762,7 @@ class Window(QtGui.QMainWindow):
                             if (not (str(row).__contains__('Comments:'))) and (x is False):
                                 import_temp_time.append((float(row[0])) * 1000)
                                 import_temp.append(float(row[1]))
-                                import_air.append(float(row[2]))
+                                import_ai.append(float(row[2]))
                                 import_temp_fcrack.append(float(row[3]))
                                 import_temp_scrack.append(float(row[4]))
                                 import_temp_tp.append(float(row[5]))
@@ -1097,6 +1098,12 @@ class Window(QtGui.QMainWindow):
     # gas level change function
     def gas(self, event):
         self.gas_slider.setFocus(True)
+
+        air_gas_dialog = BorderLessDiaglogs(self, "gas")
+        air_gas_dialog.exec_()
+        air_gas_dialog.show()
+        air_gas_dialog.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+
         b_font = QtGui.QFont()
         b_font.setBold(True)
         self.gas_slider_label.setFont(b_font)
@@ -1105,6 +1112,13 @@ class Window(QtGui.QMainWindow):
     # air level change funciton
     def air(self):
         self.air_slider.setFocus(True)
+
+        air_gas_dialog = BorderLessDiaglogs(self, "air")
+        air_gas_dialog.exec_()
+        air_gas_dialog.show()
+        air_gas_dialog.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+
+
         b_font = QtGui.QFont()
         b_font.setBold(True)
         self.air_slider_label.setFont(b_font)
@@ -1115,7 +1129,8 @@ class Window(QtGui.QMainWindow):
 if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
     splash_pix = QPixmap((os.path.expanduser("~/Roastery/loading.png")))
-    splash = QtGui.QSplashScreen(splash_pix, QtCore.Qt.WindowStaysOnTopHint)
+    splash = QtGui.QSplashScreen(splash_pix)
+    splash.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint)
     QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
     splash.setMask(splash_pix.mask())
     splash.show()
