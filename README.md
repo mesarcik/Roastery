@@ -2,6 +2,12 @@
 
 ## About
 Open Source Coffee Roast Monitoring Software
+
+##Prerequisites
+*	PyQt4
+*	Numpy
+*	PyQtGraph
+
 ## Usage
 Fork this repository and run Rosetta.py
 
