@@ -10,15 +10,12 @@ class RocDialog(QtGui.QDialog):
         self.dialog_layout = QtGui.QGridLayout()
         self.setLayout(self.dialog_layout)
 
-        self.title = QtGui.QLabel('Please Select Rate of Change Method')
+        self.title = QtGui.QLabel('Rate of Change Preferences')
         self.title.setFont(self.font)
 
 
-        self.temp_title = QtGui.QLabel("Graphing Preferences (only take effect on restart")
+        self.temp_title = QtGui.QLabel("Temperature Smoothing Preferences")
         self.temp_title.setFont(self.font)
-
-
-
 
 
 
@@ -29,24 +26,6 @@ class RocDialog(QtGui.QDialog):
             self.cb.setChecked(False)
 
         self.cb.stateChanged.connect(self.checkbox_change)
-
-        self.legend_cb =QtGui.QCheckBox('Show Legend', self)
-
-        if (self.window.showLegend == "True"):
-            self.legend_cb.setChecked(True)
-        else:
-            self.legend_cb.setChecked(False)
-
-        self.legend_cb.stateChanged.connect(self.checkbox_change_leg)
-
-        self.int_cb = QtGui.QCheckBox('Interactive Graphs', self)
-
-        if (self.window.int == "True"):
-            self.int_cb.setChecked(True)
-        else:
-            self.int_cb.setChecked(False)
-
-        self.int_cb.stateChanged.connect(self.checkbox_change_int)
 
 
         self.radio_group = QtGui.QButtonGroup()
@@ -60,20 +39,20 @@ class RocDialog(QtGui.QDialog):
         # self.delta_slider.setTickInterval()
         self.delta_label = QtGui.QLabel('Delta Interval')
         self.delta_val = QtGui.QLabel(str(window.delta) + ' samples')
-        self.delta_val.setFont(font)
+        # self.delta_val.setFont(font)
 
         self.sampling_slider = QtGui.QSlider(QtCore.Qt.Horizontal)
         self.sampling_slider.setValue(window.sampling_interval)
         self.sampling_label = QtGui.QLabel('Sampling Interval')
         self.sampling_val = QtGui.QLabel(str(window.sampling_interval) + ' ms')
-        self.sampling_val.setFont(font)
+        # self.sampling_val.setFont(font)
         self.sampling_slider.setEnabled(False)
 
         self.refresh_slider = QtGui.QSlider(QtCore.Qt.Horizontal)
         self.referesh_label = QtGui.QLabel('Referesh Rate')
         self.refresh_slider.setValue(window.refresh_rate)
         self.refresh_val = QtGui.QLabel(str(window.refresh_rate) + ' samples')
-        self.refresh_val.setFont(font)
+        # self.refresh_val.setFont(font)
         self.refresh_slider.setEnabled(False)
 
         # #Roc properties
@@ -90,19 +69,7 @@ class RocDialog(QtGui.QDialog):
         else:
             self.window.tempSmooth ='False'
 
-    def checkbox_change_leg(self,state1):
-        if state1 == QtCore.Qt.Checked:
-            self.window.showLegend ='True'
 
-        else:
-            self.window.showLegend ='False'
-
-    def checkbox_change_int(self,state2):
-        if state2 == QtCore.Qt.Checked:
-            self.window.int ='True'
-
-        else:
-            self.window.int ='False'
 
     def initUI(self):
         self.point_button.toggled.connect(self.radio_change)
@@ -119,10 +86,6 @@ class RocDialog(QtGui.QDialog):
 
         self.dialog_layout.addWidget(self.temp_title, 0, 0)
         self.dialog_layout.addWidget(self.cb,1,0)
-
-        self.dialog_layout.addWidget(self.legend_cb, 2, 0)
-        self.dialog_layout.addWidget(self.int_cb, 3, 0)
-
 
 
         self.dialog_layout.addWidget(self.title, 4, 0)
@@ -188,10 +151,12 @@ class RocDialog(QtGui.QDialog):
             self.window.rocMethod = 'point'
 
     def showEvent(self, event):
-        geom = self.frameGeometry()
-        cp = QtGui.QDesktopWidget().availableGeometry().center()
-        geom.moveCenter(cp)
-        self.setGeometry(geom)
-        self.move(geom.center())
+        # geom = self.frameGeometry()
+        # cp = QtGui.QDesktopWidget().availableGeometry().center()
+        # geom.moveCenter(cp)
+        # self.setGeometry(geom)
+        # self.move(geom.center())
+        self.setWindowTitle("Rate Of Change Preference Dialog")
+
 
         super(RocDialog, self).showEvent(event)

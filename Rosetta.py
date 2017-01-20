@@ -26,6 +26,7 @@ from BorderLessDiaglogs import BorderLessDiaglogs
 from ChildWindow import ChildWindow
 from GrapherThread import GrapherThread
 from RecoveryThread import RecoveryThread
+from GraphPrefDialog import GraphPrefDialog
 
 
 
@@ -118,6 +119,8 @@ class Window(QtGui.QMainWindow):
         self.tempSmooth =''
         self.showLegend = ''
         self.int =''
+        self.scale = 2
+        self.ratio = 8.325
 
         self.beans = []
 
@@ -333,7 +336,7 @@ class Window(QtGui.QMainWindow):
 
         # GRAPHING ELEMENTS ###################################
         self.TempAxis = TimeAxisItem(orientation='bottom')
-        self.TempAxis.setScale(16.65) # Scale to get accurate minute measurements. -- 16.65 is one minute measures
+        self.TempAxis.setScale(self.scale*self.ratio) # Scale to get accurate minute measurements. -- 16.65 is one minute measures
         self.temp = pg.PlotWidget(title='Temperature vs. Time Graph',axisItems={'bottom': self.TempAxis})
 
 
@@ -376,7 +379,7 @@ class Window(QtGui.QMainWindow):
         self.temp.setYRange(0, 255, padding=0)
         self.temp.showGrid(x=True, y=True, alpha=0.3)
         self.RoCaxis = TimeAxisItem(orientation='bottom')
-        self.RoCaxis.setScale(16.65)
+        self.RoCaxis.setScale(self.scale*self.ratio)
         # self.tickFont = QtGui.QFont()
         # self.tickFont.setPointSize(8.5)
         # self.tickFont.
@@ -484,13 +487,16 @@ class Window(QtGui.QMainWindow):
         add_bean_action.triggered.connect(self.addBean)
         remove_bean_action.triggered.connect(self.removeBean)
         cb_action.triggered.connect(self.selectBean)
+        graph_pref_action = QtGui.QAction(QtGui.QIcon.fromTheme('somethingelse'), 'Graph Preferences', self)
+        roc_pref_action = QtGui.QAction(QtGui.QIcon.fromTheme('somethingelse'), 'Smoothing Preferences', self)
 
-        roc_pref_action = QtGui.QAction(QtGui.QIcon.fromTheme('somethingelse'), 'Change Preferences', self)
-        # roc_pref_action.setShortcut('Ctrl+P')
         roc_pref_action.triggered.connect(self.rocPref)
+        graph_pref_action.triggered.connect(self.graphPref)
 
 
         toolMenu.addAction(roc_pref_action)
+        toolMenu.addAction(graph_pref_action)
+
         
 
         fileMenu.addAction(exitAction)
@@ -668,6 +674,10 @@ class Window(QtGui.QMainWindow):
                 val = line.split('=')
                 self.int = str(val[1]).strip('\n')
                 print("Interactive graphs: ", self.int)
+            if (line.__contains__('scale')):
+                val = line.split('=')
+                self.scale = float(str(val[1]).strip('\n'))
+                print("Scale: ", self.scale)
             line = pre_file.readline()
 
     # save initialzed preferences to disk
@@ -681,7 +691,8 @@ class Window(QtGui.QMainWindow):
             pref_file.write('refresh_rate =' + str(self.refresh_rate) + "\n")
             pref_file.write('temp_smooth=' + str(self.tempSmooth) + "\n")
             pref_file.write('show_legend=' + str(self.showLegend)+"\n")
-            pref_file.write('int=' + str(self.int))
+            pref_file.write('int=' + str(self.int)+"\n")
+            pref_file.write('scale=' + str(self.scale))
 
             pref_file.close()
 
@@ -693,21 +704,40 @@ class Window(QtGui.QMainWindow):
             pref_file.write('refresh_rate =' + str(self.refresh_rate)+"\n")
             pref_file.write('temp_smooth=' + str(self.tempSmooth)+"\n")
             pref_file.write('show_legend=' + str(self.showLegend)+"\n")
-            pref_file.write('int=' + str(self.int))
+            pref_file.write('int=' + str(self.int) + "\n")
+            pref_file.write('scale=' + str(self.scale))
 
             pref_file.close()
     #call ROC preference dialog in a new thread
     def rocPref(self):
         roc_dialog = RocDialog(self,self.font)
-        roc_dialog.setWindowTitle("Preference Dialog")
         roc_dialog.exec_()
         roc_dialog.show()
         roc_dialog.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
         self.savePref()
         self.initPref()
-        # self.timer.stop()
-        # self.timer.start(self.sampling_interval)
+
         print'ROC PREF'
+    #call graph preferences dialog
+    def graphPref(self):
+
+        msgBox = QtGui.QMessageBox()
+        msgBox.setText('Note: All changes Made only take effect on restart.')
+        msgBox.setWindowTitle("Restart Notice")
+        msgBox.setDefaultButton(QtGui.QMessageBox.Ok)
+        ret = msgBox.exec_()
+
+        if ret == QtGui.QMessageBox.Ok:
+            pass
+
+        graph_dialog = GraphPrefDialog(self, self.font)
+        graph_dialog.exec_()
+        graph_dialog.show()
+        graph_dialog.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+        self.savePref()
+        self.initPref()
+
+        print'Graph PREF'
     # load in the bean preferenecs
     def initBeans(self):
         try:
