@@ -56,6 +56,8 @@ class RocDialog(QtGui.QDialog):
 
         self.delta_slider = QtGui.QSlider(QtCore.Qt.Horizontal)
         self.delta_slider.setValue(window.delta)
+        self.delta_slider.setRange(1,100)
+        # self.delta_slider.setTickInterval()
         self.delta_label = QtGui.QLabel('Delta Interval')
         self.delta_val = QtGui.QLabel(str(window.delta) + ' samples')
         self.delta_val.setFont(font)
