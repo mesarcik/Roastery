@@ -23,7 +23,7 @@ class GraphPrefDialog(QtGui.QDialog):
         self.scale_slider.setSingleStep(1)
         self.scale_slider.setValue(self.window.scale)
         self.scale_slider.setTickInterval(1)
-        self.scale_slider.setRange(1, 10)
+        self.scale_slider.setRange(0.5, 10)
         self.scale_slider.valueChanged.connect(self.slider_change)
         self.scale_slider_lable = QtGui.QLabel("Set Graph Scale")
         self.scale_slider_val = QtGui.QLabel(str(self.window.scale))

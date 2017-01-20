@@ -11,6 +11,9 @@ class GrapherThread(QThread):
     def __init__(self,window):
         QThread.__init__(self)
         self.window = window
+        self.roc_temp =0
+        self.y_air = []
+        self.x_time = []
 
     def __del__(self):
         self.wait()
@@ -54,7 +57,7 @@ class GrapherThread(QThread):
             # IF FIRST TIME RUNING THEN TAKE OUT PROBLEMS
             try:
                 if (self.window.temp_data[0] == 0):
-                    print("This is the length of the temp_data array" + str(len(self.window.temp_data)))
+                    # print("This is the length of the temp_data array" + str(len(self.window.temp_data)))
 
                     self.window.temp_temp[0] = self.window.line
 
@@ -89,21 +92,21 @@ class GrapherThread(QThread):
 
                     self.window.global_count += 1
 
-                    x_time = np.array(self.window.time_data)
+                    self.x_time = np.array(self.window.time_data)
                     y_temp = np.array(self.window.temp_data)
-                    y_air = np.array(self.window.air_data)
+                    self.y_air = np.array(self.window.air_data)
 
                     self.window.temp_tp_data.append(float(0))
                     self.window.temp_first_crack_data.append((float(0)))
                     self.window.temp_second_crack_data.append((float(0)))
                     self.window.temp_drop_out_data.append(float(0))
 
-                    self.window.temp_curve.setData(x=x_time, y=y_temp)
-                    self.window.temp_air_curve.setData(x=x_time, y=y_air)
-                    self.window.temp_first_crack.setData(x=x_time, y=np.array(self.window.temp_first_crack_data))
-                    self.window.temp_second_crack_curve.setData(x=x_time, y=np.array(self.window.temp_second_crack_data))
-                    self.window.temp_drop_out.setData(x=x_time, y=np.array(self.window.temp_drop_out_data))
-                    self.window.temp_tp.setData(x=x_time, y=np.array(self.window.temp_tp_data))
+                    self.window.temp_curve.setData(x=self.x_time, y=y_temp)
+                    self.window.temp_air_curve.setData(x=self.x_time, y=self.y_air)
+                    self.window.temp_first_crack.setData(x=self.x_time, y=np.array(self.window.temp_first_crack_data))
+                    self.window.temp_second_crack_curve.setData(x=self.x_time, y=np.array(self.window.temp_second_crack_data))
+                    self.window.temp_drop_out.setData(x=self.x_time, y=np.array(self.window.temp_drop_out_data))
+                    self.window.temp_tp.setData(x=self.x_time, y=np.array(self.window.temp_tp_data))
 
 
                     #self.window.count += 1
@@ -118,77 +121,23 @@ class GrapherThread(QThread):
             # print("This is window delta",  self.window.delta)
             if (len(self.window.temp_data) - 3 > self.window.delta - 1):
                 # print("GOT IN!")
-                if (self.window.rocMethod.__contains__('point')):  # Point Average
-                    if (self.window.count > self.window.delta):
-                        roc_temp = (self.window.temp_data[self.window.count] - self.window.temp_data[self.window.count - int(self.window.delta-1)]) / int(
-                            self.window.delta-1)
-                    else:
-                        roc_temp = 0
+                if (self.window.count > self.window.delta):
 
-                    self.window.roc_label.setText('ROC ' + str(round(roc_temp, 2)))
-                    self.window.roc_data.append(float(roc_temp))
-                    self.window.roc_time_data.append(self.window.t.elapsed())
-                    x_roc_time = np.array(self.window.roc_time_data)
-                    y_roc_data = np.array(self.window.roc_data)
-                    self.window.roc_curve.setData(x=x_roc_time, y=y_roc_data)
-                    self.window.roc_first_crack.setData(x=x_roc_time, y=np.array(self.window.roc_first_crack_data))
-                    self.window.roc_second_crack.setData(x=x_roc_time, y=np.array(self.window.roc_second_crack_data))
-                    self.window.roc_drop_out.setData(x=x_roc_time, y=np.array(self.window.roc_drop_out_data))
-                    self.window.roc_tp.setData(x=x_roc_time, y=np.array(self.window.roc_tp_data))
-                    self.window.roc_gas_curve.setData(x=x_roc_time, y=np.array(self.window.gas_data))
-
-                    #Normalize the RoC Air Scale
-                    y_roc_air_temp = np.divide(y_air,2.4)
-                    y_roc_air = np.divide(y_roc_air_temp,333.3333)
-
-                    self.window.roc_air_curve.setData(x=x_time, y=y_roc_air)
-
-
-                if (self.window.rocMethod.__contains__('self.window')):  # Moving self.window Average
-                    if (self.window.count > self.window.delta):
+                    if (self.window.rocMethod.__contains__('point')):  # Point Average
+                        self.roc_temp = (self.window.temp_data[self.window.count-1] - self.window.temp_data[self.window.count - int(self.window.delta)]) / int(self.window.delta)
+                    elif (self.window.rocMethod.__contains__('self.window')):  # Moving self.window Average
                         frame_tot = 0
                         for point in range(self.window.count - 3 - int(self.window.delta + 1),
                                            self.window.count - 3):  # self.window.delta + 1 because it needs to go to zero
                             frame_tot += self.window.temp_data[point] - self.window.temp_data[point - 1]
 
-                        roc_temp = frame_tot / self.window.delta
-                    else:
-                        roc_temp = 0
-                    self.window.roc_label.setText('ROC ' + str(round(roc_temp, 2)))
+                        self.roc_temp = frame_tot / self.window.delta
 
-                    self.window.roc_data.append(float(roc_temp))
-                    self.window.roc_time_data.append(self.window.t.elapsed())
-                    x_roc_time = np.array(self.window.roc_time_data)
-                    y_roc_data = np.array(self.window.roc_data)
+                else:
+                    self.roc_temp = 0
 
-                    if (len(self.window.roc_first_crack_data) != len(x_roc_time)):
-                        self.window.roc_first_crack_data.append(0)
-                        self.window.roc_second_crack_data.append(0)
-                        self.window.roc_drop_out_data.append(0)
-                        self.window.roc_tp_data.append(0)
-                        self.window.gas_lvl = float(self.window.gas_slider.value())
-                        self.window.gas_data.append(float((self.window.gas_lvl * 1.0) / 333.3333))
+                self.updateValues()
 
-                    self.window.roc_curve.setData(x=x_roc_time, y=y_roc_data)
-                    self.window.roc_first_crack.setData(x=x_roc_time, y=np.array(self.window.roc_first_crack_data))
-                    self.window.roc_second_crack.setData(x=x_roc_time, y=np.array(self.window.roc_second_crack_data))
-                    self.window.roc_drop_out.setData(x=x_roc_time, y=np.array(self.window.roc_drop_out_data))
-                    self.window.roc_tp.setData(x=x_roc_time, y=np.array(self.window.roc_tp_data))
-                    self.window.roc_gas_curve.setData(x=x_roc_time, y=np.array(self.window.gas_data))
-
-                    # Normalize the RoC Air Scale
-                    y_roc_air_temp = np.divide(y_air, 2.4)
-                    y_roc_air = np.divide(y_roc_air_temp, 333.3333)
-
-                    self.window.roc_air_curve.setData(x=x_time, y=y_roc_air)
-
-
-                self.window.roc_tp_data.append(float(0))
-                self.window.roc_first_crack_data.append((float(0)))
-                self.window.roc_second_crack_data.append((float(0)))
-                self.window.roc_drop_out_data.append(float(0))
-                self.window.gas_lvl = float(self.window.gas_slider.value())
-                self.window.gas_data.append(float((self.window.gas_lvl * 1.0) / 333.3333))
 
             if (len(self.window.temp_data) - 3 < self.window.delta - 1):
 
@@ -213,10 +162,10 @@ class GrapherThread(QThread):
                 self.window.roc_tp.setData(x=x_roc_time, y=np.array(self.window.roc_tp_data))
                 self.window.roc_gas_curve.setData(x=x_roc_time, y=np.array(self.window.gas_data))
                 # Normalize the RoC Air Scale
-                y_roc_air_temp = np.divide(y_air, 2.4)
+                y_roc_air_temp = np.divide(self.y_air, 2.4)
                 y_roc_air = np.divide(y_roc_air_temp, 333.3333)
 
-                self.window.roc_air_curve.setData(x=x_time, y=y_roc_air)
+                self.window.roc_air_curve.setData(x=self.x_time, y=y_roc_air)
 
         except ():
             # print("GOT HERE")
@@ -225,3 +174,40 @@ class GrapherThread(QThread):
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             print(exc_type, fname, exc_tb.tb_lineno)
             pass
+
+    def updateValues(self):
+        self.window.roc_label.setText('ROC ' + str(round(self.roc_temp, 2)))
+
+        self.window.roc_data.append(float(self.roc_temp))
+        self.window.roc_time_data.append(self.window.t.elapsed())
+        x_roc_time = np.array(self.window.roc_time_data)
+        y_roc_data = np.array(self.window.roc_data)
+
+        if (len(self.window.roc_first_crack_data) != len(x_roc_time)):
+            self.window.roc_first_crack_data.append(0)
+            self.window.roc_second_crack_data.append(0)
+            self.window.roc_drop_out_data.append(0)
+            self.window.roc_tp_data.append(0)
+            self.window.gas_lvl = float(self.window.gas_slider.value())
+            self.window.gas_data.append(float((self.window.gas_lvl * 1.0) / 333.3333))
+
+        self.window.roc_curve.setData(x=x_roc_time, y=y_roc_data)
+        self.window.roc_first_crack.setData(x=x_roc_time, y=np.array(self.window.roc_first_crack_data))
+        self.window.roc_second_crack.setData(x=x_roc_time,
+                                             y=np.array(self.window.roc_second_crack_data))
+        self.window.roc_drop_out.setData(x=x_roc_time, y=np.array(self.window.roc_drop_out_data))
+        self.window.roc_tp.setData(x=x_roc_time, y=np.array(self.window.roc_tp_data))
+        self.window.roc_gas_curve.setData(x=x_roc_time, y=np.array(self.window.gas_data))
+
+        # Normalize the RoC Air Scale
+        y_roc_air_temp = np.divide(self.y_air, 2.4)
+        y_roc_air = np.divide(y_roc_air_temp, 333.3333)
+
+        self.window.roc_air_curve.setData(x=self.x_time, y=y_roc_air)
+
+        self.window.roc_tp_data.append(float(0))
+        self.window.roc_first_crack_data.append((float(0)))
+        self.window.roc_second_crack_data.append((float(0)))
+        self.window.roc_drop_out_data.append(float(0))
+        self.window.gas_lvl = float(self.window.gas_slider.value())
+        self.window.gas_data.append(float((self.window.gas_lvl * 1.0) / 333.3333))

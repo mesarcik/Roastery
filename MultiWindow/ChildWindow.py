@@ -89,7 +89,7 @@ class ChildWindow(QtGui.QMainWindow):
         # Roc properties
         self.sampling_interval = None
         self.rocMethod = ''
-        self.delta = None
+        self.window_size = None
         self.refresh_rate = None
         self.refresh_counter = 0
         self.tempSmooth =''
@@ -591,11 +591,11 @@ class ChildWindow(QtGui.QMainWindow):
                         pass
 
 
-                if (len(self.temp_data)-3 > self.delta - 1):
+                if (len(self.temp_data)-3 > self.window_size - 1):
 
                     if (self.rocMethod.__contains__('point')):  # Point Average
-                        if (self.count > self.delta):
-                            roc_temp = (self.temp_data[self.count] - self.temp_data[self.count - int(self.delta)]) / int(self.delta)
+                        if (self.count > self.window_size):
+                            roc_temp = (self.temp_data[self.count] - self.temp_data[self.count - int(self.window_size)]) / int(self.window_size)
                         else:
                             roc_temp =0
 
@@ -612,13 +612,13 @@ class ChildWindow(QtGui.QMainWindow):
                         self.roc_gas_curve.setData(x=x_roc_time, y=np.array(self.gas_data))
 
                     if (self.rocMethod.__contains__('self')):  # Moving self Average
-                        if (self.count > self.delta):
+                        if (self.count > self.window_size):
                             frame_tot = 0
-                            for point in range(self.count-3 - int(self.delta+1), self.count-3):  #self.delta + 1 because it needs to go to zero
+                            for point in range(self.count-3 - int(self.window_size+1), self.count-3):  #self.window_size + 1 because it needs to go to zero
                                 frame_tot += self.temp_data[point] - self.temp_data[point - 1]
 
 
-                            roc_temp = frame_tot / self.delta
+                            roc_temp = frame_tot / self.window_size
                         else:
                             roc_temp = 0
                         self.roc_label.setText('ROC ' + str(round(roc_temp,2))  )
@@ -645,7 +645,7 @@ class ChildWindow(QtGui.QMainWindow):
 
 
 
-                if (len(self.temp_data) - 3< self.delta - 1):
+                if (len(self.temp_data) - 3< self.window_size - 1):
 
                     self.roc_data.append(float(0))
                     self.roc_time_data.append(self.t.elapsed())
@@ -702,7 +702,7 @@ class ChildWindow(QtGui.QMainWindow):
                 self.rocMethod = str(val[1])
             if (line.__contains__('delta')):
                 val = line.split('=')
-                self.delta = float(val[1])
+                self.window_size = float(val[1])
             if (line.__contains__('refresh_rate')):
                 val = line.split('=')
                 self.refresh_rate = float(val[1])
@@ -718,7 +718,7 @@ class ChildWindow(QtGui.QMainWindow):
             pref_file = open('/home/Pref', 'w')
             pref_file.write('sampling_interval =' + str(self.sampling_interval) + '\n')
             pref_file.write('rocMethod =' + str(self.rocMethod) + '\n')
-            pref_file.write('delta =' + str(self.delta) + '\n')
+            pref_file.write('delta =' + str(self.window_size) + '\n')
             pref_file.write('refresh_rate =' + str(self.refresh_rate) + "\n")
             pref_file.write('temp_smooth=' + str(self.tempSmooth))
             pref_file.close()
@@ -727,7 +727,7 @@ class ChildWindow(QtGui.QMainWindow):
             pref_file =  open(os.path.expanduser("~/Roastery/Pref"), "w")
             pref_file.write('sampling_interval =' + str(self.sampling_interval) + '\n')
             pref_file.write('rocMethod =' + str(self.rocMethod) + '\n')
-            pref_file.write('delta =' + str(self.delta) + '\n')
+            pref_file.write('delta =' + str(self.window_size) + '\n')
             pref_file.write('refresh_rate =' + str(self.refresh_rate)+"\n")
             pref_file.write('temp_smooth=' + str(self.tempSmooth))
             pref_file.close()
