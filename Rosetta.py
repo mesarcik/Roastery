@@ -27,6 +27,7 @@ from ChildWindow import ChildWindow
 from GrapherThread import GrapherThread
 from RecoveryThread import RecoveryThread
 from GraphPrefDialog import GraphPrefDialog
+from SmoothingDialog import SmoothingDialog
 
 
 
@@ -117,6 +118,7 @@ class Window(QtGui.QMainWindow):
         self.refresh_rate = None
         self.refresh_counter = 0
         self.tempSmooth =''
+        self.rocSmooth = ''
         self.showLegend = ''
         self.int =''
         self.scale = 2
@@ -488,14 +490,19 @@ class Window(QtGui.QMainWindow):
         remove_bean_action.triggered.connect(self.removeBean)
         cb_action.triggered.connect(self.selectBean)
         graph_pref_action = QtGui.QAction(QtGui.QIcon.fromTheme('somethingelse'), 'Graph Preferences', self)
-        roc_pref_action = QtGui.QAction(QtGui.QIcon.fromTheme('somethingelse'), 'Smoothing Preferences', self)
+        roc_pref_action = QtGui.QAction(QtGui.QIcon.fromTheme('somethingelse'), 'Rate of Change Preferences', self)
+        smooth_pref_action = QtGui.QAction(QtGui.QIcon.fromTheme('somethingelse'), 'Smoothing Preferences', self)
 
         roc_pref_action.triggered.connect(self.rocPref)
         graph_pref_action.triggered.connect(self.graphPref)
+        smooth_pref_action.triggered.connect(self.smoothPref)
+
 
 
         toolMenu.addAction(roc_pref_action)
         toolMenu.addAction(graph_pref_action)
+        toolMenu.addAction(smooth_pref_action)
+
 
         
 
@@ -666,6 +673,10 @@ class Window(QtGui.QMainWindow):
                 val = line.split('=')
                 self.tempSmooth = str(val[1]).strip('\n')
                 print("Temp smooth: " , self.tempSmooth)
+            if (line.__contains__('roc_smooth')):
+                val = line.split('=')
+                self.rocSmooth = str(val[1]).strip('\n')
+                print("RoC smooth: ", self.rocSmooth)
             if (line.__contains__('show_legend')):
                 val = line.split('=')
                 self.showLegend = str(val[1]).strip('\n')
@@ -690,6 +701,7 @@ class Window(QtGui.QMainWindow):
             pref_file.write('delta =' + str(self.delta) + '\n')
             pref_file.write('refresh_rate =' + str(self.refresh_rate) + "\n")
             pref_file.write('temp_smooth=' + str(self.tempSmooth) + "\n")
+            pref_file.write('roc_smooth=' + str(self.rocSmooth) + "\n")
             pref_file.write('show_legend=' + str(self.showLegend)+"\n")
             pref_file.write('int=' + str(self.int)+"\n")
             pref_file.write('scale=' + str(self.scale))
@@ -703,6 +715,7 @@ class Window(QtGui.QMainWindow):
             pref_file.write('delta =' + str(self.delta) + '\n')
             pref_file.write('refresh_rate =' + str(self.refresh_rate)+"\n")
             pref_file.write('temp_smooth=' + str(self.tempSmooth)+"\n")
+            pref_file.write('roc_smooth=' + str(self.rocSmooth)+"\n")
             pref_file.write('show_legend=' + str(self.showLegend)+"\n")
             pref_file.write('int=' + str(self.int) + "\n")
             pref_file.write('scale=' + str(self.scale))
@@ -714,6 +727,17 @@ class Window(QtGui.QMainWindow):
         roc_dialog.exec_()
         roc_dialog.show()
         roc_dialog.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+        self.savePref()
+        self.initPref()
+
+        print'ROC PREF'
+
+    # call smoothing preference dialog in a new thread
+    def smoothPref(self):
+        smooth_dialog = SmoothingDialog(self, self.font)
+        smooth_dialog.exec_()
+        smooth_dialog.show()
+        smooth_dialog.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
         self.savePref()
         self.initPref()
 
@@ -776,7 +800,7 @@ class Window(QtGui.QMainWindow):
             file_writer.seek(-1, os.SEEK_END)
             file_writer.truncate()
 
-        file_writer.close()
+            file_writer.close()
         self.initBeans()
         self.setWindowTitle(current_bean)
 
@@ -934,7 +958,7 @@ class Window(QtGui.QMainWindow):
             file_writer.seek(-1, os.SEEK_END)
             file_writer.truncate()
 
-        file_writer.close()
+            file_writer.close()
         self.initBeans()
 
     # writes .csv file for all the current data

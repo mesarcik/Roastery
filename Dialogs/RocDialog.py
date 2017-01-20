@@ -13,30 +13,9 @@ class RocDialog(QtGui.QDialog):
         self.title = QtGui.QLabel('Rate of Change Preferences')
         self.title.setFont(self.font)
 
-
-        self.temp_title = QtGui.QLabel("Temperature Smoothing Preferences")
-        self.temp_title.setFont(self.font)
-
-
-
-        self.cb = QtGui.QCheckBox('Temperature Smoothing', self)
-        if(self.window.tempSmooth=="True"):
-            self.cb.setChecked(True)
-        else:
-            self.cb.setChecked(False)
-
-        self.cb.stateChanged.connect(self.checkbox_change)
-
-
         self.radio_group = QtGui.QButtonGroup()
-        self.ewma_button = QtGui.QRadioButton('EWMA Filter')
-        self.ewma_button.setToolTip("Exponential Weighted Moving Average")
-        self.ewma_button.setEnabled(False)
-        self.median_button = QtGui.QRadioButton('Median Filter')
-        self.median_button.setEnabled(False)
-        self.savgol_button = QtGui.QRadioButton('Savitzky-Golay Filter')
-        self.savgol_button.setEnabled(False)
-        self.window_button = QtGui.QRadioButton('Moving Average Filter')
+        self.point_button = QtGui.QRadioButton('Point-Wise Rate of Change')
+        self.window_button = QtGui.QRadioButton('Moving Window Rate of Change')
 
         self.window_size_slider = QtGui.QSlider(QtCore.Qt.Horizontal)
         self.window_size_slider.setValue(window.delta)
@@ -68,40 +47,25 @@ class RocDialog(QtGui.QDialog):
         # window.refresh_counter = 0
         self.initUI()
 
-    def checkbox_change(self,state):
-        if state == QtCore.Qt.Checked:
-            self.window.tempSmooth ='True'
-        else:
-            self.window.tempSmooth ='False'
-
-
 
     def initUI(self):
-        self.ewma_button.toggled.connect(self.radio_change)
+        self.point_button.toggled.connect(self.radio_change)
         self.window_button.toggled.connect(self.radio_change)
-        self.savgol_button.toggled.connect(self.radio_change)
-        self.median_button.toggled.connect(self.radio_change)
 
         if (str(self.window.rocMethod).__contains__('point')):
-            self.ewma_button.setChecked(True)
+            self.point_button.setChecked(True)
 
-        if (str(self.window.rocMethod).__contains__('self.window')):
+        if (str(self.window.rocMethod).__contains__('window')):
             self.window_button.setChecked(True)
 
-        self.radio_group.addButton(self.ewma_button)
+        self.radio_group.addButton(self.point_button)
         self.radio_group.addButton(self.window_button)
-        self.radio_group.addButton(self.savgol_button)
-        self.radio_group.addButton(self.median_button)
-
-        self.dialog_layout.addWidget(self.temp_title, 0, 0)
-        self.dialog_layout.addWidget(self.cb,1,0)
 
 
         self.dialog_layout.addWidget(self.title, 2, 0)
-        self.dialog_layout.addWidget(self.savgol_button, 3, 0)
+        self.dialog_layout.addWidget(self.point_button, 3, 0)
         self.dialog_layout.addWidget(self.window_button, 3, 1)
-        self.dialog_layout.addWidget(self.ewma_button, 3, 2)
-        self.dialog_layout.addWidget(self.median_button, 3, 3)
+
         self.dialog_layout.setAlignment(QtCore.Qt.AlignLeft)
 
 
@@ -159,16 +123,11 @@ class RocDialog(QtGui.QDialog):
     def radio_change(self):
 
         if (self.window_button.isChecked()):
-            self.window.rocMethod = 'self.window'
+            self.window.rocMethod = 'window'
 
-        elif (self.ewma_button.isChecked()):
-            self.window.rocMethod = 'ewma'
+        elif (self.point_button.isChecked()):
+            self.window.rocMethod = 'point'
 
-        elif (self.savgol_button.isChecked()):
-            self.window.rocMethod = 'savgol'
-
-        elif (self.median_button.isChecked()):
-            self.window.rocMethod = 'median'
 
     def showEvent(self, event):
         # geom = self.frameGeometry()
