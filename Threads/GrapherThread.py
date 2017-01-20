@@ -21,39 +21,12 @@ class GrapherThread(QThread):
     def run(self):
         #   print("Graph Thread Spawned")
         try:
-            #DEV TIME STUFF
-            if (self.window.first_crack_bool):
-                # print ("This is elasped time: " + str(self.window.minute_count*60 + self.window.second_count) )
-                # print("This is first crack time " + str( self.window.fcrack_time_s) )
-
-                dev_amount_s = (self.window.minute_count * 60 + self.window.second_count) - self.window.fcrack_time_s
-                dev_percentage = (1 - round(
-                    float((float(self.window.fcrack_time_s) / float((self.window.minute_count * 60 + self.window.second_count)))), 2)) * 100
-                self.window.dev_second_count += 1
-
-                if (self.window.dev_second_count == 60):
-                    self.window.dev_minute_count += 1
-                    self.window.dev_second_count = 0
-
-                dev_amount_str = str(self.window.dev_minute_count) + ":" + str(self.window.dev_second_count)
-                self.window.dev_label.setText("DEV: " + dev_amount_str + " | " + str(dev_percentage) + "%")
+            self.devTime()
 
             self.window.refresh_counter += 1
-            # SERIAL PORT FLUSHER
-            if (self.window.refresh_counter == self.window.refresh_rate):
-                self.window.arduino.arduino.flushOutput()
-                self.window.arduino.arduino.flushInput()
-                self.window.refresh_counter = 0
+            self.serialFlush()
             # TURNING POINT INFO
-            if (self.window.tp_bool == False):
-                if (len(self.window.roc_data) > 10):
-                    if (self.window.roc_data[-9] < 0):
-                        if (self.window.roc_data[-1] > 0):
-                            self.window.temp_tp_data[-1] = float(240)
-                            self.window.roc_tp_data[-1] = float(0.3)
-                            self.window.turn()
-                            self.window.tp_bool = True
-
+            self.turnP()
             # IF FIRST TIME RUNING THEN TAKE OUT PROBLEMS
             try:
                 if (self.window.temp_data[0] == 0):
@@ -211,3 +184,39 @@ class GrapherThread(QThread):
         self.window.roc_drop_out_data.append(float(0))
         self.window.gas_lvl = float(self.window.gas_slider.value())
         self.window.gas_data.append(float((self.window.gas_lvl * 1.0) / 333.3333))
+
+    def devTime(self):
+        # DEV TIME STUFF
+        if (self.window.first_crack_bool):
+            # print ("This is elasped time: " + str(self.window.minute_count*60 + self.window.second_count) )
+            # print("This is first crack time " + str( self.window.fcrack_time_s) )
+
+            dev_amount_s = (self.window.minute_count * 60 + self.window.second_count) - self.window.fcrack_time_s
+            dev_percentage = (1 - round(
+                float((float(self.window.fcrack_time_s) / float(
+                    (self.window.minute_count * 60 + self.window.second_count)))), 2)) * 100
+            self.window.dev_second_count += 1
+
+            if (self.window.dev_second_count == 60):
+                self.window.dev_minute_count += 1
+                self.window.dev_second_count = 0
+
+            dev_amount_str = str(self.window.dev_minute_count) + ":" + str(self.window.dev_second_count)
+            self.window.dev_label.setText("DEV: " + dev_amount_str + " | " + str(dev_percentage) + "%")
+
+    def serialFlush(self):
+        # SERIAL PORT FLUSHER
+        if (self.window.refresh_counter == self.window.refresh_rate):
+            self.window.arduino.arduino.flushOutput()
+            self.window.arduino.arduino.flushInput()
+            self.window.refresh_counter = 0
+
+    def turnP(self):
+        if (self.window.tp_bool == False):
+            if (len(self.window.roc_data) > 10):
+                if (self.window.roc_data[-9] < 0):
+                    if (self.window.roc_data[-1] > 0):
+                        self.window.temp_tp_data[-1] = float(240)
+                        self.window.roc_tp_data[-1] = float(0.3)
+                        self.window.turn()
+                        self.window.tp_bool = True
