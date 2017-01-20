@@ -2,8 +2,8 @@
 <project version="4">
   <component name="BookmarkManager">
     <bookmark url="file://$PROJECT_DIR$/Rosetta.py" />
-    <bookmark url="file://$PROJECT_DIR$/Rosetta.py" line="1037" />
-    <bookmark url="file://$PROJECT_DIR$/Rosetta.py" line="996" />
+    <bookmark url="file://$PROJECT_DIR$/Rosetta.py" line="1052" />
+    <bookmark url="file://$PROJECT_DIR$/Rosetta.py" line="1011" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="32193b1c-2eef-4c93-a33d-fb08779a514f" name="Default" comment="" />
@@ -18,7 +18,19 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
+<<<<<<< HEAD
     <SUITE FILE_PATH="coverage/Rosetta$Rosetta.coverage" NAME="Rosetta Coverage Results" MODIFIED="1484901623504" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+=======
+    <SUITE FILE_PATH="coverage/Rosetta$PortChecker.coverage" NAME="PortChecker Coverage Results" MODIFIED="1454052859845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Rosetta$Unittests_in_Rosetta.coverage" NAME="Unittests in Rosetta Coverage Results" MODIFIED="1453715407820" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Rosetta$End_Dialog.coverage" NAME="End_Dialog Coverage Results" MODIFIED="1468331399382" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Rosetta$1.coverage" NAME="1 Coverage Results" MODIFIED="1484823657594" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../test" />
+<<<<<<< HEAD
+    <SUITE FILE_PATH="coverage/Rosetta$Graph.coverage" NAME="Graph Coverage Results" MODIFIED="1484839252286" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+=======
+    <SUITE FILE_PATH="coverage/Rosetta$Graph.coverage" NAME="Graph Coverage Results" MODIFIED="1484839621285" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+>>>>>>> master
+>>>>>>> graph-dialog-branch
   </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
@@ -33,12 +45,25 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
+<<<<<<< HEAD
     <leaf>
       <file leaf-file-name="Rosetta.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Rosetta.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="255">
               <caret line="19" column="35" lean-forward="false" selection-start-line="19" selection-start-column="35" selection-end-line="19" selection-end-column="35" />
+=======
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="Rosetta.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Rosetta.py">
+          <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+            <state relative-caret-position="466">
+              <caret line="1165" column="2" lean-forward="true" selection-start-line="1165" selection-start-column="2" selection-end-line="1165" selection-end-column="2" />
+=======
+            <state relative-caret-position="8550">
+              <caret line="1110" column="28" lean-forward="true" selection-start-line="1110" selection-start-column="28" selection-end-line="1110" selection-end-column="28" />
+>>>>>>> graph-dialog-branch
               <folding>
                 <marker date="1484902645560" expanded="true" signature="14247:16218" ph="..." />
                 <marker date="1484902645560" expanded="true" signature="14247:48956" ph="..." />
@@ -170,6 +195,20 @@
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
+=======
+      <file leaf-file-name="BorderLessDiaglogs.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/BorderLessDiaglogs.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="450">
+              <caret line="46" column="18" lean-forward="false" selection-start-line="46" selection-start-column="13" selection-end-line="46" selection-end-column="18" />
+>>>>>>> master
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+>>>>>>> graph-dialog-branch
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -204,6 +243,10 @@
       <find>airF</find>
       <find>exec</find>
       <find>RoCDialog</find>
+      <find>()</find>
+      <find>connect()</find>
+      <find>roc_first_crack_data</find>
+      <find>tickStrings</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -234,8 +277,8 @@
         <option value="$PROJECT_DIR$/SerialThread.py" />
         <option value="$PROJECT_DIR$/GrapherThread.py" />
         <option value="$PROJECT_DIR$/../test/1.py" />
-        <option value="$PROJECT_DIR$/Rosetta.py" />
         <option value="$PROJECT_DIR$/BorderLessDiaglogs.py" />
+        <option value="$PROJECT_DIR$/Rosetta.py" />
       </list>
     </option>
   </component>
@@ -331,6 +374,7 @@
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder3" value="3" />
     <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file:///home/misha/Open365/PycharmProjects/Rosetta/SerialThread.py" />
     <property name="js.eslint.eslintPackage" value="" />
+    <property name="FullScreen" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -718,6 +762,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
+<<<<<<< HEAD
     <frame x="0" y="30" width="1366" height="738" extended-state="6" />
     <editor active="true" />
     <layout>
@@ -734,6 +779,45 @@
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+=======
+<<<<<<< HEAD
+    <frame x="0" y="-28" width="1366" height="796" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24772727" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+=======
+    <frame x="0" y="-28" width="1366" height="796" extended-state="7" />
+    <editor active="false" />
+    <layout>
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2439394" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+>>>>>>> master
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22601625" sideWeight="0.5181818" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32930514" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3284553" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32998565" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+<<<<<<< HEAD
+=======
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22585438" sideWeight="0.48181817" order="2" side_tool="false" content_ui="tabs" x="23" y="329" width="1320" height="139" />
+>>>>>>> master
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3284553" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32930514" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22585438" sideWeight="0.48181817" order="2" side_tool="false" content_ui="tabs" x="23" y="329" width="1320" height="139" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32904148" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Concurrent Activities Diagram" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32998565" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2682927" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+    </layout>
+    <layout-to-restore>
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+>>>>>>> graph-dialog-branch
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -766,38 +850,13 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/GrapherThread.py</url>
-          <line>21</line>
-          <option name="timeStamp" value="106" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/GrapherThread.py</url>
-          <line>10</line>
-          <option name="timeStamp" value="110" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/GrapherThread.py</url>
-          <line>19</line>
-          <option name="timeStamp" value="111" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/RocDialog.py</url>
-          <line>3</line>
-          <option name="timeStamp" value="113" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/GrapherThread.py</url>
-          <line>75</line>
-          <option name="timeStamp" value="115" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Rosetta.py</url>
-          <line>697</line>
+          <line>712</line>
           <option name="timeStamp" value="118" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Rosetta.py</url>
-          <line>554</line>
+          <line>566</line>
           <option name="timeStamp" value="125" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -805,11 +864,21 @@
           <line>69</line>
           <option name="timeStamp" value="133" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Rosetta.py</url>
+          <line>927</line>
+          <option name="timeStamp" value="136" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Rosetta.py</url>
+          <line>764</line>
+          <option name="timeStamp" value="137" />
+        </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="136" />
+      <option name="time" value="138" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -818,6 +887,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+<<<<<<< HEAD
+          <folding />
+=======
           <folding>
             <marker date="1484902645560" expanded="true" signature="14247:16218" ph="..." />
             <marker date="1484902645560" expanded="true" signature="14247:48956" ph="..." />
@@ -1035,6 +1107,7 @@
             <marker date="1484902645560" expanded="true" signature="48082:48493" ph="..." />
             <marker date="1484902645560" expanded="true" signature="48544:48956" ph="..." />
           </folding>
+>>>>>>> master
         </state>
       </provider>
     </entry>
@@ -1042,6 +1115,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+<<<<<<< HEAD
+          <folding />
+=======
           <folding>
             <marker date="1484902645560" expanded="true" signature="14247:16218" ph="..." />
             <marker date="1484902645560" expanded="true" signature="14247:48956" ph="..." />
@@ -1147,6 +1223,7 @@
             <marker date="1484902645560" expanded="true" signature="48082:48493" ph="..." />
             <marker date="1484902645560" expanded="true" signature="48544:48956" ph="..." />
           </folding>
+>>>>>>> master
         </state>
       </provider>
     </entry>
@@ -1154,6 +1231,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+<<<<<<< HEAD
+          <folding />
+=======
           <folding>
             <marker date="1484902645560" expanded="true" signature="14247:16218" ph="..." />
             <marker date="1484902645560" expanded="true" signature="14247:48956" ph="..." />
@@ -1259,6 +1339,7 @@
             <marker date="1484902645560" expanded="true" signature="48082:48493" ph="..." />
             <marker date="1484902645560" expanded="true" signature="48544:48956" ph="..." />
           </folding>
+>>>>>>> master
         </state>
       </provider>
     </entry>
@@ -1266,6 +1347,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+<<<<<<< HEAD
+          <folding />
+=======
           <folding>
             <marker date="1484902645560" expanded="true" signature="14247:16218" ph="..." />
             <marker date="1484902645560" expanded="true" signature="14247:48956" ph="..." />
@@ -1371,6 +1455,7 @@
             <marker date="1484902645560" expanded="true" signature="48082:48493" ph="..." />
             <marker date="1484902645560" expanded="true" signature="48544:48956" ph="..." />
           </folding>
+>>>>>>> master
         </state>
       </provider>
     </entry>
@@ -1378,6 +1463,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+<<<<<<< HEAD
+          <folding />
+=======
           <folding>
             <marker date="1484902645560" expanded="true" signature="14247:16218" ph="..." />
             <marker date="1484902645560" expanded="true" signature="14247:48956" ph="..." />
@@ -1483,6 +1571,7 @@
             <marker date="1484902645560" expanded="true" signature="48082:48493" ph="..." />
             <marker date="1484902645560" expanded="true" signature="48544:48956" ph="..." />
           </folding>
+>>>>>>> master
         </state>
       </provider>
     </entry>
@@ -1490,6 +1579,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+<<<<<<< HEAD
+          <folding />
+=======
           <folding>
             <marker date="1484902645560" expanded="true" signature="14247:16218" ph="..." />
             <marker date="1484902645560" expanded="true" signature="14247:48956" ph="..." />
@@ -1602,13 +1694,18 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="43" column="4" lean-forward="false" selection-start-line="43" selection-start-column="4" selection-end-line="43" selection-end-column="4" />
+>>>>>>> master
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/PortChecker.py" />
     <entry file="file://$PROJECT_DIR$/Rosetta.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+<<<<<<< HEAD
+          <folding />
+=======
           <folding>
             <marker date="1484902645560" expanded="true" signature="14247:16218" ph="..." />
             <marker date="1484902645560" expanded="true" signature="14247:48956" ph="..." />
@@ -1721,13 +1818,18 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="43" column="4" lean-forward="false" selection-start-line="43" selection-start-column="4" selection-end-line="43" selection-end-column="4" />
+>>>>>>> master
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/PortChecker.py" />
     <entry file="file://$PROJECT_DIR$/Rosetta.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="9" column="0" lean-forward="false" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+<<<<<<< HEAD
+          <folding />
+=======
           <folding>
             <marker date="1484902645560" expanded="true" signature="14247:16218" ph="..." />
             <marker date="1484902645560" expanded="true" signature="14247:48956" ph="..." />
@@ -1840,13 +1942,18 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+>>>>>>> master
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/PortChecker.py" />
     <entry file="file://$PROJECT_DIR$/Rosetta.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="128" column="22" lean-forward="false" selection-start-line="124" selection-start-column="4" selection-end-line="128" selection-end-column="22" />
+<<<<<<< HEAD
+          <folding />
+=======
           <folding>
             <marker date="1484902645560" expanded="true" signature="14247:16218" ph="..." />
             <marker date="1484902645560" expanded="true" signature="14247:48956" ph="..." />
@@ -1959,13 +2066,18 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+>>>>>>> master
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/PortChecker.py" />
     <entry file="file://$PROJECT_DIR$/Rosetta.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+<<<<<<< HEAD
+          <folding />
+=======
           <folding>
             <marker date="1484902645560" expanded="true" signature="14247:16218" ph="..." />
             <marker date="1484902645560" expanded="true" signature="14247:48956" ph="..." />
@@ -2078,13 +2190,18 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="24" column="23" lean-forward="false" selection-start-line="24" selection-start-column="20" selection-end-line="24" selection-end-column="23" />
+>>>>>>> master
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/PortChecker.py" />
     <entry file="file://$PROJECT_DIR$/Rosetta.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+<<<<<<< HEAD
+          <folding />
+=======
           <folding>
             <marker date="1484902645560" expanded="true" signature="14247:16218" ph="..." />
             <marker date="1484902645560" expanded="true" signature="14247:48956" ph="..." />
@@ -2197,13 +2314,18 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="22" column="13" lean-forward="false" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
+>>>>>>> master
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/PortChecker.py" />
     <entry file="file://$PROJECT_DIR$/Rosetta.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+<<<<<<< HEAD
+          <folding />
+=======
           <folding>
             <marker date="1484902645560" expanded="true" signature="14247:16218" ph="..." />
             <marker date="1484902645560" expanded="true" signature="14247:48956" ph="..." />
@@ -2309,6 +2431,7 @@
             <marker date="1484902645560" expanded="true" signature="48082:48493" ph="..." />
             <marker date="1484902645560" expanded="true" signature="48544:48956" ph="..." />
           </folding>
+>>>>>>> master
         </state>
       </provider>
     </entry>
@@ -2316,6 +2439,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+<<<<<<< HEAD
+          <folding />
+=======
           <folding>
             <marker date="1484902645560" expanded="true" signature="14247:16218" ph="..." />
             <marker date="1484902645560" expanded="true" signature="14247:48956" ph="..." />
@@ -2428,9 +2554,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="43" column="4" lean-forward="false" selection-start-line="43" selection-start-column="4" selection-end-line="43" selection-end-column="4" />
+>>>>>>> master
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/PortChecker.py" />
     <entry file="file://$USER_HOME$/.PyCharm50/system/python_stubs/-1247972723/PyQt4/QtGui/__init__.py" />
     <entry file="file:///usr/lib/python2.7/dist-packages/pyqtgraph/graphicsItems/PlotDataItem.py" />
     <entry file="file://$USER_HOME$/.PyCharm50/system/python_stubs/-1247972723/PyQt4/QtGui/QWidget.py" />
@@ -2442,24 +2570,11 @@
     <entry file="file://$USER_HOME$/.PyCharm2016.1/system/python_stubs/-1247972723/PyQt4/QtGui/QMainWindow.py" />
     <entry file="file://$PROJECT_DIR$/Holder.py" />
     <entry file="file:///Library/Python/2.7/site-packages/serial/__init__.py" />
-    <entry file="file://$PROJECT_DIR$/MultiWindows.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="73" lean-forward="false" selection-start-line="12" selection-start-column="72" selection-end-line="12" selection-end-column="73" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiWindows.py" />
     <entry file="file://$PROJECT_DIR$/setup.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
           <caret line="16" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Dock_Widget.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="9" column="48" lean-forward="false" selection-start-line="9" selection-start-column="48" selection-end-line="9" selection-end-column="48" />
         </state>
       </provider>
     </entry>
@@ -2473,6 +2588,10 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
+    <entry file="file://$PROJECT_DIR$/ChildWindow.py" />
+    <entry file="file://$PROJECT_DIR$/SerialThread.py" />
+=======
     <entry file="file://$PROJECT_DIR$/ChildWindow.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="7485">
@@ -2487,6 +2606,7 @@
         </state>
       </provider>
     </entry>
+>>>>>>> master
     <entry file="file://$USER_HOME$/.local/lib/python2.7/site-packages/pyqtgraph/exporters/ImageExporter.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="284">
@@ -2504,6 +2624,11 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
+    <entry file="file://$PROJECT_DIR$/icon.ico" />
+    <entry file="file://$PROJECT_DIR$/End_Dialog.py" />
+    <entry file="file://$PROJECT_DIR$/RecoveryThread.py" />
+=======
     <entry file="file://$PROJECT_DIR$/TimeAxisItem.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
@@ -2565,6 +2690,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="600">
           <caret line="41" column="50" lean-forward="false" selection-start-line="41" selection-start-column="50" selection-end-line="41" selection-end-column="50" />
+<<<<<<< HEAD
         </state>
       </provider>
     </entry>
@@ -2573,6 +2699,34 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
           <caret line="19" column="35" lean-forward="false" selection-start-line="19" selection-start-column="35" selection-end-line="19" selection-end-column="35" />
+=======
+          <folding />
+        </state>
+      </provider>
+    </entry>
+>>>>>>> master
+    <entry file="file://$PROJECT_DIR$/../test/1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="26" lean-forward="true" selection-start-line="6" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RocDialog.py" />
+    <entry file="file://$PROJECT_DIR$/GrapherThread.py" />
+    <entry file="file://$PROJECT_DIR$/TimeAxisItem.py" />
+    <entry file="file://$PROJECT_DIR$/BorderLessDiaglogs.py" />
+    <entry file="file://$PROJECT_DIR$/Info.plist" />
+    <entry file="file://$PROJECT_DIR$/Dock_Widget.py" />
+    <entry file="file://$PROJECT_DIR$/Rosetta.py">
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+        <state relative-caret-position="466">
+          <caret line="1165" column="2" lean-forward="true" selection-start-line="1165" selection-start-column="2" selection-end-line="1165" selection-end-column="2" />
+=======
+        <state relative-caret-position="8550">
+          <caret line="1110" column="28" lean-forward="true" selection-start-line="1110" selection-start-column="28" selection-end-line="1110" selection-end-column="28" />
+>>>>>>> graph-dialog-branch
           <folding>
             <marker date="1484902645560" expanded="true" signature="14247:16218" ph="..." />
             <marker date="1484902645560" expanded="true" signature="14247:48956" ph="..." />
@@ -2685,6 +2839,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="450">
           <caret line="46" column="18" lean-forward="false" selection-start-line="46" selection-start-column="13" selection-end-line="46" selection-end-column="18" />
+<<<<<<< HEAD
+=======
+>>>>>>> master
+          <folding />
+>>>>>>> graph-dialog-branch
         </state>
       </provider>
     </entry>

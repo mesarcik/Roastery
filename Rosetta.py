@@ -1,22 +1,28 @@
 from pyqtgraph.Qt import QtGui, QtCore
 from PyQt4.QtGui import QPixmap
-from PyQt4.QtCore import QObject,pyqtSignal
 import numpy as np
-from RocDialog import RocDialog
-from Dock_Widget import Dock_Widget
-from TimeAxisItem import TimeAxisItem
-from MultiWindows import MultiWindows
-from SerialThread import SerialThread
-from BorderLessDiaglogs import BorderLessDiaglogs
-import pyqtgraph as pg
-import pyqtgraph.exporters
 import sys
+import pyqtgraph as pg
 import csv
 import os
 from os.path import expanduser
 import datetime
 import time
 import gc
+
+sys.path.insert(0, '/home/misha/Google Drive/PycharmProjects/Rosetta-November2016/Dialogs')
+sys.path.insert(0, '/home/misha/Google Drive/PycharmProjects/Rosetta-November2016/Threads')
+sys.path.insert(0, '/home/misha/Google Drive/PycharmProjects/Rosetta-November2016/GraphingTools')
+sys.path.insert(0, '/home/misha/Google Drive/PycharmProjects/Rosetta-November2016/Layout')
+sys.path.insert(0, '/home/misha/Google Drive/PycharmProjects/Rosetta-November2016/MultiWindow')
+
+
+from RocDialog import RocDialog
+from Dock_Widget import Dock_Widget
+from TimeAxisItem import TimeAxisItem
+from MultiWindows import MultiWindows
+from SerialThread import SerialThread
+from BorderLessDiaglogs import BorderLessDiaglogs
 from ChildWindow import ChildWindow
 from GrapherThread import GrapherThread
 from RecoveryThread import RecoveryThread
@@ -327,7 +333,7 @@ class Window(QtGui.QMainWindow):
 
         # GRAPHING ELEMENTS ###################################
         self.TempAxis = TimeAxisItem(orientation='bottom')
-        self.TempAxis.setScale(16.65) # Scale to get accurate minute measurements.
+        self.TempAxis.setScale(16.65) # Scale to get accurate minute measurements. -- 16.65 is one minute measures
         self.temp = pg.PlotWidget(title='Temperature vs. Time Graph',axisItems={'bottom': self.TempAxis})
 
 
@@ -371,6 +377,12 @@ class Window(QtGui.QMainWindow):
         self.temp.showGrid(x=True, y=True, alpha=0.3)
         self.RoCaxis = TimeAxisItem(orientation='bottom')
         self.RoCaxis.setScale(16.65)
+        # self.tickFont = QtGui.QFont()
+        # self.tickFont.setPointSize(8.5)
+        # self.tickFont.
+        # self.RoCaxis.setTickFont(self.tickFont)
+
+
         self.roc = pg.PlotWidget(title='RoC vs. Time Graph', axisItems={'bottom': self.RoCaxis})
         self.roc.setXRange(0, 800000., padding=0)
 
