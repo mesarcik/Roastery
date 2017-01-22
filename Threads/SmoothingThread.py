@@ -1,10 +1,13 @@
 from PyQt4.QtCore import QThread
+from PyQt4.QtCore import pyqtSlot, pyqtSignal
 import numpy as np
 import sys
 import os
 
 
 class SmoothingThread(QThread):
+    finished = pyqtSignal()
+
     def __init__(self, window):
         QThread.__init__(self)
         self.window = window
@@ -14,9 +17,12 @@ class SmoothingThread(QThread):
 
     def run(self):
         try:
-            print("Smoothing Thread Spawned.")
+            # print("Smoothing Thread Spawned.")
             if (self.window.smoothAlgorithm == "avg"):
                 print ("Moving Window Average")
+                if(self.window.tempSmooth =="True"):
+                    self.mov_avg("Temp")
+
                 self.mov_avg()
             elif (self.window.smoothAlgorithm == "ewma"):
                 print ("Exponential Windowed Moving Average")
@@ -33,12 +39,15 @@ class SmoothingThread(QThread):
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             print(exc_type, fname, exc_tb.tb_lineno)
             pass
+        finally:
+            self.finished.emit()
 
-    def savgol(self):
+
+    def savgol(self,type):
         pass
-    def mov_avg (self):
+    def mov_avg (self,type):
         pass
-    def ewma (self):
+    def ewma (self,type):
         pass
-    def median (self):
+    def median (self,type):
         pass

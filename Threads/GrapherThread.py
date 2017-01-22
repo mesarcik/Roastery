@@ -1,5 +1,5 @@
 from PyQt4.QtCore import QThread
-from PyQt4.QtCore import SIGNAL
+from PyQt4.QtCore import pyqtSlot, pyqtSignal
 import numpy as np
 import sys
 import os
@@ -8,6 +8,9 @@ import os
 
 
 class GrapherThread(QThread):
+
+    finished = pyqtSignal()
+
 
     def __init__(self,window):
         QThread.__init__(self)
@@ -32,6 +35,8 @@ class GrapherThread(QThread):
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             print(exc_type, fname, exc_tb.tb_lineno)
+        finally:
+            self.finished.emit()
 
     def updateValues(self):
         self.window.roc_label.setText('ROC ' + str(round(self.window.roc_temp, 2)))

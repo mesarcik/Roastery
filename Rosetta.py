@@ -631,24 +631,36 @@ class Window(QtGui.QMainWindow):
 
         self.s_time = time.time()
         # time.sleep()
-
+    #Signal for RoCThread completion
     def onRoCFinished(self):
         try:
-            print("RoC calcucalted: Graph results.")
+            # print("RoC calcucalted: Graph results.")
 
             ###################SMOOTHIONG THREADS ###############################
-
-            rocSmoothingThread = SmoothingThread(self)
-            tempSmoothingThread = SmoothingThread(self)
-
+            if (self.tempSmooth == "True" or self.rocSmooth == "True"):
+                smoothingThread = SmoothingThread(self)
+                smoothingThread.finished.connect(self.onSmoothFinished)
+                smoothingThread.start()
+            else:
+                grapherThread = GrapherThread(self)
+                grapherThread.finished.connect(self.onGraphFinished)
+                grapherThread.start()
             ####################################################################
-            grapherThread = GrapherThread(self)
-            grapherThread.start()
+
         except:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             print(exc_type, fname, exc_tb.tb_lineno)
             pass
+    #Signal for SmoothThread Completion
+    def onSmoothFinished(self):
+        print("Smoothing Done.")
+        grapherThread = GrapherThread(self)
+        grapherThread.finished.connect(self.onGraphFinished)
+        grapherThread.start()
+
+    def onGraphFinished(self):
+        print("Graph done.")
 
     # terminate application on shortcut keys
     def quit(self):
