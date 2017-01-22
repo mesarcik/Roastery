@@ -119,6 +119,7 @@ class Window(QtGui.QMainWindow):
         self.refresh_counter = 0
         self.tempSmooth =''
         self.rocSmooth = ''
+        self.smoothAlgorithm = ''
         self.showLegend = ''
         self.int =''
         self.scale = 2
@@ -677,6 +678,10 @@ class Window(QtGui.QMainWindow):
                 val = line.split('=')
                 self.rocSmooth = str(val[1]).strip('\n')
                 print("RoC smooth: ", self.rocSmooth)
+            if (line.__contains__('smooth_algorithm')):
+                val = line.split('=')
+                self.smoothAlgorithm = str(val[1]).strip('\n')
+                print("Smoothing Algorithm: ",self.smoothAlgorithm )
             if (line.__contains__('show_legend')):
                 val = line.split('=')
                 self.showLegend = str(val[1]).strip('\n')
@@ -702,6 +707,7 @@ class Window(QtGui.QMainWindow):
             pref_file.write('refresh_rate =' + str(self.refresh_rate) + "\n")
             pref_file.write('temp_smooth=' + str(self.tempSmooth) + "\n")
             pref_file.write('roc_smooth=' + str(self.rocSmooth) + "\n")
+            pref_file.write('smooth_algorithm=' + str(self.smoothAlgorithm) + "\n")
             pref_file.write('show_legend=' + str(self.showLegend)+"\n")
             pref_file.write('int=' + str(self.int)+"\n")
             pref_file.write('scale=' + str(self.scale))
@@ -716,6 +722,7 @@ class Window(QtGui.QMainWindow):
             pref_file.write('refresh_rate =' + str(self.refresh_rate)+"\n")
             pref_file.write('temp_smooth=' + str(self.tempSmooth)+"\n")
             pref_file.write('roc_smooth=' + str(self.rocSmooth)+"\n")
+            pref_file.write('smooth_algorithm=' + str(self.smoothAlgorithm) + "\n")
             pref_file.write('show_legend=' + str(self.showLegend)+"\n")
             pref_file.write('int=' + str(self.int) + "\n")
             pref_file.write('scale=' + str(self.scale))

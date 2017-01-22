@@ -129,16 +129,15 @@ class SmoothingDialog(QtGui.QDialog):
     def radio_change(self):
 
         if (self.window_button.isChecked()):
-            pass
+            self.window.smoothAlgorithm = 'avg'
         elif (self.ewma_button.isChecked()):
-            pass
+            self.window.smoothAlgorithm = 'ewma'
         elif (self.savgol_button.isChecked()):
-            pass
+            self.window.smoothAlgorithm = 'savgol'
         elif (self.median_button.isChecked()):
-            pass
+            self.window.smoothAlgorithm = 'median'
+
+
     def showEvent(self, event):
-
         self.setWindowTitle("Smoothing Preference Dialog")
-
-
         super(SmoothingDialog, self).showEvent(event)

@@ -1,4 +1,5 @@
 from PyQt4.QtCore import QThread
+from PyQt4.QtCore import SIGNAL
 import numpy as np
 import sys
 import os
