@@ -2,7 +2,7 @@ import sys
 import glob
 import serial
 import time
-from threading import Timer
+from thread_ing import Timer
 
 def serial_ports():
     """ Lists serial port names

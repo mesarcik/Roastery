@@ -16,7 +16,6 @@ sys.path.insert(0, '/home/misha/Google Drive/PycharmProjects/Rosetta-November201
 sys.path.insert(0, '/home/misha/Google Drive/PycharmProjects/Rosetta-November2016/Layout')
 sys.path.insert(0, '/home/misha/Google Drive/PycharmProjects/Rosetta-November2016/MultiWindow')
 
-
 from RocDialog import RocDialog
 from Dock_Widget import Dock_Widget
 from TimeAxisItem import TimeAxisItem
@@ -28,12 +27,11 @@ from GrapherThread import GrapherThread
 from RecoveryThread import RecoveryThread
 from GraphPrefDialog import GraphPrefDialog
 from SmoothingDialog import SmoothingDialog
-
-
+from RoCThread import RoCThread
+from SmoothingThread import SmoothingThread
 
 ###########################################
 windows = MultiWindows()
-
 
 import_temp_time = []
 import_roc_time = []
@@ -53,27 +51,27 @@ import_roc_tp = []
 import_roc_do = []
 now = datetime.datetime.now()
 counter = 0
-current_bean =""
+current_bean = ""
+
+
 ################################################
 
 
 class Window(QtGui.QMainWindow):
-    #initilize main window
+    # initilize main window
     def __init__(self):
-        QtGui.QMainWindow.__init__(self, None) #, QtCore.Qt.WindowStaysOnTopHint
+        QtGui.QMainWindow.__init__(self, None)  # , QtCore.Qt.WindowStaysOnTopHint
 
         # super(Window, self).__init__()
         self.first = False
 
-        self.grapherThread = GrapherThread(self)
-        self.recoveryThread = RecoveryThread(self)
         self.s_time = time.time()
         self.elapsed = 0
 
         self.current_temp = []
         self.start_time = 0
-        self.import_bool  = False
-        self.line=''
+        self.import_bool = False
+        self.line = ''
 
         self.new_window = None
         self.count = 1
@@ -98,12 +96,11 @@ class Window(QtGui.QMainWindow):
         self.roc_second_crack_data = [0]
         self.start_stop = False
 
-
         # Lable timer init
         self.timer_thread = QtCore.QTimer()
         self.minute_count = 0
         self.second_count = 0
-        self.corrective_counter =0
+        self.corrective_counter = 0
         self.offset = 0;
         self.second_count_minus_1 = 0
 
@@ -117,15 +114,16 @@ class Window(QtGui.QMainWindow):
         self.delta = None
         self.refresh_rate = None
         self.refresh_counter = 0
-        self.tempSmooth =''
+        self.tempSmooth = ''
         self.rocSmooth = ''
         self.smoothAlgorithm = ''
         self.showLegend = ''
-        self.int =''
+        self.int = ''
         self.scale = 2
         self.ratio = 8.325
 
         self.beans = []
+        self.roc_temp = 0
 
         #######Place holder for development time
         self.fcrack_time_s = 0;
@@ -153,13 +151,10 @@ class Window(QtGui.QMainWindow):
         elif sys.platform.startswith('darwin'):
             self.roastPreflocation = os.path.expanduser("~/Roastery/RoastPref")
 
-
         self.arduino = None
-
 
         self.initBeans()
         self.initUI()
-
 
         # Makeing fonts
         self.font = QtGui.QFont()
@@ -235,7 +230,8 @@ class Window(QtGui.QMainWindow):
         # //    def __init__(self, parent, , , ,,,,,window):
 
 
-        self.dock_widget = Dock_Widget(self.top_right_layout, self.top_left_layout, self.bottom_layout, self.gas_slider, self.gas_slider_label, self.air_slider, self.air_slider_label, self,self)
+        self.dock_widget = Dock_Widget(self.top_right_layout, self.top_left_layout, self.bottom_layout, self.gas_slider,
+                                       self.gas_slider_label, self.air_slider, self.air_slider_label, self, self)
         self.setCentralWidget(self.dock_widget)
 
         ##########################################
@@ -278,11 +274,11 @@ class Window(QtGui.QMainWindow):
         self.top_right_layout.addWidget(self.roc, 0, 1, 1, 1)  # list widget goes in bottom-left
         self.top_left_layout.addWidget(self.temp, 0, 0, 1, 1)  # plot goes on right side, spanning 3 rows
 
-
         self.showMaximized()
 
         print("EVERYTHING IS INITIALIZED")
-    #initlize tables (import/export)
+
+    # initlize tables (import/export)
     def setup_tables(self):
         ############### TABLE ELEMENTS ######################
 
@@ -327,7 +323,8 @@ class Window(QtGui.QMainWindow):
         self.stats_tbl.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.stats_tbl.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.stats_tbl.resizeRowsToContents()
-    #initilize pyqtgraph
+
+    # initilize pyqtgraph
     def setup_graph(self):
         print("Configuring graphs")
 
@@ -336,14 +333,13 @@ class Window(QtGui.QMainWindow):
             self.temp.close()
             self.roc.close()
 
-
         # GRAPHING ELEMENTS ###################################
         self.TempAxis = TimeAxisItem(orientation='bottom')
-        self.TempAxis.setScale(self.scale*self.ratio) # Scale to get accurate minute measurements. -- 16.65 is one minute measures
-        self.temp = pg.PlotWidget(title='Temperature vs. Time Graph',axisItems={'bottom': self.TempAxis})
+        self.TempAxis.setScale(
+            self.scale * self.ratio)  # Scale to get accurate minute measurements. -- 16.65 is one minute measures
+        self.temp = pg.PlotWidget(title='Temperature vs. Time Graph', axisItems={'bottom': self.TempAxis})
 
-
-        if(self.int =="False"):
+        if (self.int == "False"):
             self.temp.setInteractive(False)
         else:
             self.temp.setInteractive(True)
@@ -382,7 +378,7 @@ class Window(QtGui.QMainWindow):
         self.temp.setYRange(0, 255, padding=0)
         self.temp.showGrid(x=True, y=True, alpha=0.3)
         self.RoCaxis = TimeAxisItem(orientation='bottom')
-        self.RoCaxis.setScale(self.scale*self.ratio)
+        self.RoCaxis.setScale(self.scale * self.ratio)
         # self.tickFont = QtGui.QFont()
         # self.tickFont.setPointSize(8.5)
         # self.tickFont.
@@ -432,17 +428,17 @@ class Window(QtGui.QMainWindow):
         self.roc_drop_out = self.roc.plot(pen=self.do_pen, name='Drop Out')
         self.import_roc_drop_out_curve = self.roc.plot(pen=self.ido_pen)
 
-        self.roc.setYRange(0, 0.33  , padding=0)
-
+        self.roc.setYRange(0, 0.33, padding=0)
 
         self.roc.showGrid(x=True, y=True, alpha=0.3)
-    #spawn serialthread to determine Serial connections
+
+    # spawn serialthread to determine Serial connections
     def connect(self):
         self.arduino = SerialThread(9600, self, self.timer)
         self.arduino.start()
-        while(self.arduino.isRunning()):
+        while (self.arduino.isRunning()):
             continue
-        if(self.arduino.port_bool == 0):
+        if (self.arduino.port_bool == 0):
             msgBox = QtGui.QMessageBox()
             msgBox.setText("Thermocouple systems cannot be reached\n\nError Encountered: ")
             msgBox.setInformativeText("Please diconnect and reconnect USB cable")
@@ -451,6 +447,7 @@ class Window(QtGui.QMainWindow):
             ret = msgBox.exec_()
             if ret == QtGui.QMessageBox.Ok:
                 self.quit()
+
     # add all the graphical stuff to the interface -- initialize shortcuts
     def initUI(self):
         exitAction = QtGui.QAction(QtGui.QIcon.fromTheme('exit'), 'Terminate Application', self)
@@ -459,7 +456,7 @@ class Window(QtGui.QMainWindow):
         exitAction.setStatusTip('Exit application')
         exitAction.triggered.connect(self.quit)
 
-        newWindowAction  = QtGui.QAction(QtGui.QIcon.fromTheme('new'), 'New Window', self)
+        newWindowAction = QtGui.QAction(QtGui.QIcon.fromTheme('new'), 'New Window', self)
         newWindowAction.setShortcut('Ctrl+N')
         newWindowAction.setStatusTip('New Window')
         newWindowAction.triggered.connect(self.showChildWindow)
@@ -481,8 +478,6 @@ class Window(QtGui.QMainWindow):
         export_Action.setShortcut('Ctrl+E')
         export_Action.setStatusTip('Export Data')
 
-
-
         bean_pref = toolMenu.addMenu('Bean Preferences')
         cb_action = bean_pref.addAction("Select Bean Type")
         add_bean_action = bean_pref.addAction('Add New Bean Type')
@@ -498,14 +493,9 @@ class Window(QtGui.QMainWindow):
         graph_pref_action.triggered.connect(self.graphPref)
         smooth_pref_action.triggered.connect(self.smoothPref)
 
-
-
         toolMenu.addAction(roc_pref_action)
         toolMenu.addAction(graph_pref_action)
         toolMenu.addAction(smooth_pref_action)
-
-
-        
 
         fileMenu.addAction(exitAction)
         fileMenu.addAction(newWindowAction)
@@ -543,17 +533,18 @@ class Window(QtGui.QMainWindow):
         self.gas_action.setEnabled(False)
         self.air_action.setEnabled(False)
 
-    #Fuction for making a new window
+    # Fuction for making a new window
     def showChildWindow(self):
         if (self.arduino.state == False):
             gc.collect()
             QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
             start = time.time()
-            splash = QtGui.QSplashScreen(QPixmap((os.path.expanduser("/~/Roastery/loading.png"))), QtCore.Qt.WindowStaysOnTopHint)
+            splash = QtGui.QSplashScreen(QPixmap((os.path.expanduser("/~/Roastery/loading.png"))),
+                                         QtCore.Qt.WindowStaysOnTopHint)
             splash.show()
             progressBar = QtGui.QProgressBar(splash)
             palette = QtGui.QPalette()
-            palette.setColor(QtGui.QPalette.Highlight,QtGui.QColor(QtCore.Qt.red))
+            palette.setColor(QtGui.QPalette.Highlight, QtGui.QColor(QtCore.Qt.red))
 
             progressBar.setPalette(palette)
 
@@ -564,7 +555,7 @@ class Window(QtGui.QMainWindow):
                 progressBar.setValue(i)
                 t = time.time()
                 while time.time() < t + 0.1:
-                   app.processEvents()
+                    app.processEvents()
 
             self.child_win = ChildWindow()
             self.child_win.show()
@@ -577,33 +568,34 @@ class Window(QtGui.QMainWindow):
         else:
             print("Another Thread running")
 
-    #timed thread that calls update function to collect serial data, smooth, etc
+    # timed thread that calls update function to collect serial data, smooth, etc
     def update(self):
-        self.elapsed = round( time.time()-self.s_time,1)
-        if(self.elapsed>1):
+        self.elapsed = round(time.time() - self.s_time, 1)
+        if (self.elapsed > 1):
             print("Elapsed Time: " + str(self.elapsed))
 
         self.line = self.arduino.readline()
-        self.first= True
-        self.line = round(float(self.line),1)
+        self.first = True
+        self.line = round(float(self.line), 1)
 
         self.temp_temp.append(float(self.line))
-        if(self.tempSmooth == "True"):
+        if (self.tempSmooth == "True"):
             try:
                 # self.temp_label.setText('        TEMP:' + str(round(float((self.temp_temp[-1] + self.temp_temp[-2] + self.temp_temp[-3]) / 3),1)))
-                self.temp_label.setText('        TEMP:' + str(round((self.temp_temp[-1]*0.1 + self.temp_temp[-2]*0.9),1)))
+                self.temp_label.setText(
+                    '        TEMP:' + str(round((self.temp_temp[-1] * 0.1 + self.temp_temp[-2] * 0.9), 1)))
 
             except:
                 self.temp_label.setText('        TEMP:' + str((self.line)))
-                if(self.start_stop == False):
-                    self.offset +=1
+                if (self.start_stop == False):
+                    self.offset += 1
                 pass
         else:
             self.temp_label.setText('        TEMP:' + str((self.line)))
 
-        if(self.start_stop == True):
+        if (self.start_stop == True):
 
-            if ((self.second_count == 59)  or ((self.second_count_minus_1 > 50) and (self.second_count <10))) :
+            if ((self.second_count == 59) or ((self.second_count_minus_1 > 50) and (self.second_count < 10))):
                 self.minute_count += 1
                 self.second_count = 0
             if (self.second_count < 10):
@@ -619,22 +611,47 @@ class Window(QtGui.QMainWindow):
             self.second_count_minus_1 = self.second_count
             self.second_count = int(((time.time() - self.start_time) % 60))
 
-            while (self.elapsed>1):
-                self.recoveryThread.start()
-                while(self.recoveryThread.isRunning()):
+            recoveryThread = RecoveryThread(self)
+
+            while (self.elapsed > 1):
+                recoveryThread.start()
+                while (recoveryThread.isRunning()):
                     continue
 
-            self.count+=1
-            self.grapherThread.start()
+            self.count += 1
 
-            while (self.grapherThread.isRunning()):
-                continue
+            rocThread = RoCThread(self)
+            rocThread.finished.connect(self.onRoCFinished)
+            rocThread.start()
+
+
+
+            # while (self.grapherThread.isRunning()):
+            #     continue
 
         self.s_time = time.time()
-        #time.sleep()
+        # time.sleep()
+
+    def onRoCFinished(self):
+        try:
+            print("RoC calcucalted: Graph results.")
+
+            ###################SMOOTHIONG THREADS ###############################
+
+            rocSmoothingThread = SmoothingThread(self)
+            tempSmoothingThread = SmoothingThread(self)
+
+            ####################################################################
+            grapherThread = GrapherThread(self)
+            grapherThread.start()
+        except:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            print(exc_type, fname, exc_tb.tb_lineno)
+            pass
 
     # terminate application on shortcut keys
-    def quit (self):
+    def quit(self):
         self.deleteLater()
         self.close()
         sys.exit()
@@ -656,12 +673,12 @@ class Window(QtGui.QMainWindow):
             if (line.__contains__('sampling_interval')):
                 val = line.split('=')
                 self.sampling_interval = float(val[1])
-                print("Sampling interval",self.sampling_interval)
+                print("Sampling interval", self.sampling_interval)
             if (line.__contains__('rocMethod')):
                 val = line.split('=')
                 # print"This is val 1 " + val[1]
                 self.rocMethod = str(val[1]).strip('\n')
-                print("ROC Method",self.rocMethod)
+                print("ROC Method", self.rocMethod)
             if (line.__contains__('delta')):
                 val = line.split('=')
                 self.delta = float(val[1])
@@ -669,11 +686,11 @@ class Window(QtGui.QMainWindow):
             if (line.__contains__('refresh_rate')):
                 val = line.split('=')
                 self.refresh_rate = float(val[1])
-                print("Refresh rate " , self.refresh_rate)
+                print("Refresh rate ", self.refresh_rate)
             if (line.__contains__('temp_smooth')):
                 val = line.split('=')
                 self.tempSmooth = str(val[1]).strip('\n')
-                print("Temp smooth: " , self.tempSmooth)
+                print("Temp smooth: ", self.tempSmooth)
             if (line.__contains__('roc_smooth')):
                 val = line.split('=')
                 self.rocSmooth = str(val[1]).strip('\n')
@@ -681,7 +698,7 @@ class Window(QtGui.QMainWindow):
             if (line.__contains__('smooth_algorithm')):
                 val = line.split('=')
                 self.smoothAlgorithm = str(val[1]).strip('\n')
-                print("Smoothing Algorithm: ",self.smoothAlgorithm )
+                print("Smoothing Algorithm: ", self.smoothAlgorithm)
             if (line.__contains__('show_legend')):
                 val = line.split('=')
                 self.showLegend = str(val[1]).strip('\n')
@@ -700,7 +717,7 @@ class Window(QtGui.QMainWindow):
     def savePref(self):
 
         if sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
-            pref_file =  open(os.path.expanduser("~/Roastery/Pref"), "w")
+            pref_file = open(os.path.expanduser("~/Roastery/Pref"), "w")
             pref_file.write('sampling_interval =' + str(self.sampling_interval) + '\n')
             pref_file.write('rocMethod =' + str(self.rocMethod) + '\n')
             pref_file.write('delta =' + str(self.delta) + '\n')
@@ -708,29 +725,30 @@ class Window(QtGui.QMainWindow):
             pref_file.write('temp_smooth=' + str(self.tempSmooth) + "\n")
             pref_file.write('roc_smooth=' + str(self.rocSmooth) + "\n")
             pref_file.write('smooth_algorithm=' + str(self.smoothAlgorithm) + "\n")
-            pref_file.write('show_legend=' + str(self.showLegend)+"\n")
-            pref_file.write('int=' + str(self.int)+"\n")
+            pref_file.write('show_legend=' + str(self.showLegend) + "\n")
+            pref_file.write('int=' + str(self.int) + "\n")
             pref_file.write('scale=' + str(self.scale))
 
             pref_file.close()
 
         elif sys.platform.startswith('darwin'):
-            pref_file =  open(os.path.expanduser("~/Roastery/Pref"), "w")
+            pref_file = open(os.path.expanduser("~/Roastery/Pref"), "w")
             pref_file.write('sampling_interval =' + str(self.sampling_interval) + '\n')
             pref_file.write('rocMethod =' + str(self.rocMethod) + '\n')
             pref_file.write('delta =' + str(self.delta) + '\n')
-            pref_file.write('refresh_rate =' + str(self.refresh_rate)+"\n")
-            pref_file.write('temp_smooth=' + str(self.tempSmooth)+"\n")
-            pref_file.write('roc_smooth=' + str(self.rocSmooth)+"\n")
+            pref_file.write('refresh_rate =' + str(self.refresh_rate) + "\n")
+            pref_file.write('temp_smooth=' + str(self.tempSmooth) + "\n")
+            pref_file.write('roc_smooth=' + str(self.rocSmooth) + "\n")
             pref_file.write('smooth_algorithm=' + str(self.smoothAlgorithm) + "\n")
-            pref_file.write('show_legend=' + str(self.showLegend)+"\n")
+            pref_file.write('show_legend=' + str(self.showLegend) + "\n")
             pref_file.write('int=' + str(self.int) + "\n")
             pref_file.write('scale=' + str(self.scale))
 
             pref_file.close()
-    #call ROC preference dialog in a new thread
+
+    # call ROC preference dialog in a new thread
     def rocPref(self):
-        roc_dialog = RocDialog(self,self.font)
+        roc_dialog = RocDialog(self, self.font)
         roc_dialog.exec_()
         roc_dialog.show()
         roc_dialog.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
@@ -749,17 +767,12 @@ class Window(QtGui.QMainWindow):
         self.initPref()
 
         print'ROC PREF'
-    #call graph preferences dialog
+
+    # call graph preferences dialog
     def graphPref(self):
 
-        msgBox = QtGui.QMessageBox()
-        msgBox.setText('Note: All changes Made only take effect on restart.')
-        msgBox.setWindowTitle("Restart Notice")
-        msgBox.setDefaultButton(QtGui.QMessageBox.Ok)
-        ret = msgBox.exec_()
-
-        if ret == QtGui.QMessageBox.Ok:
-            pass
+        QtGui.QMessageBox.information(self, "Restart Notice",
+                                      "This session must be restarted for graph changes to take place.")
 
         graph_dialog = GraphPrefDialog(self, self.font)
         graph_dialog.exec_()
@@ -769,6 +782,7 @@ class Window(QtGui.QMainWindow):
         self.initPref()
 
         print'Graph PREF'
+
     # load in the bean preferenecs
     def initBeans(self):
         try:
@@ -785,7 +799,6 @@ class Window(QtGui.QMainWindow):
             fg.moveCenter(cp)
             msgBox.move(fg.center())
 
-
             msgBox.setText('Cannot Find Preference Files')
             msgBox.setInformativeText('Please contact support')
             msgBox.setWindowTitle("ERROR")
@@ -794,7 +807,8 @@ class Window(QtGui.QMainWindow):
 
             if ret == QtGui.QMessageBox.Ok:
                 self.quit()
-    #allows for the saving and track keeping of selected beans
+
+    # allows for the saving and track keeping of selected beans
     def selectBean(self):
         item, ok = QtGui.QInputDialog.getItem(self, "Select Bean", "Beans: ", self.beans, 0, False)
         current_bean = item
@@ -811,7 +825,7 @@ class Window(QtGui.QMainWindow):
         self.initBeans()
         self.setWindowTitle(current_bean)
 
-    #reads in .csv for import
+    # reads in .csv for import
     def importAction(self):
         x = False
         rcount = 0
@@ -834,7 +848,7 @@ class Window(QtGui.QMainWindow):
 
                     for row in temp_reader:
                         try:
-                            rcount+=1
+                            rcount += 1
                             if (not (str(row).__contains__('Comments:'))) and (x is False):
                                 import_temp_time.append((float(row[0])) * 1000)
                                 import_temp.append(float(row[1]))
@@ -878,7 +892,7 @@ class Window(QtGui.QMainWindow):
 
 
 
-                        except Exception,e:
+                        except Exception, e:
                             print e
                             print "Unexpect ed error:", sys.exc_info()[0]
                             pass
@@ -912,7 +926,7 @@ class Window(QtGui.QMainWindow):
                     self.import_temp_air_curve.setData(x=np.array(import_temp_time), y=(np.array(import_air)))
                     self.import_temp_first_crack.setData(x=np.array(import_temp_time), y=(np.array(import_temp_fcrack)))
                     self.import_temp_second_crack_curve.setData(x=np.array(import_temp_time),
-                                                           y=(np.array(import_temp_scrack)))
+                                                                y=(np.array(import_temp_scrack)))
                     self.import_temp_tp_curve.setData(x=np.array(import_temp_time), y=(np.array(import_temp_tp)))
                     self.import_temp_drop_out_curve.setData(x=np.array(import_temp_time), y=(np.array(import_temp_do)))
 
@@ -924,16 +938,16 @@ class Window(QtGui.QMainWindow):
                     self.import_roc_drop_out_curve.setData(x=np.array(import_roc_time), y=(np.array(import_roc_do)))
 
                     # Normalize the RoC Air Scale
-                    y_air=np.array(import_air)
+                    y_air = np.array(import_air)
                     y_roc_air_temp = np.divide(y_air, 2.4)
                     y_roc_air = np.divide(y_roc_air_temp, 333.3333)
                     self.import_roc_air_curve.setData(x=import_temp_time, y=y_roc_air)
 
-                    self.import_bool=True
+                    self.import_bool = True
                     self.setFocus()
 
 
-        except Exception as e :
+        except Exception as e:
             print e
             msgBox = QtGui.QMessageBox()
             msgBox.setText('You have not selected a roast data file')
@@ -944,6 +958,7 @@ class Window(QtGui.QMainWindow):
 
             if ret == QtGui.QMessageBox.Ok:
                 pass
+
     # add bean to disk
     def addBean(self):
         bean_file = open(self.roastPreflocation, 'a')
@@ -952,6 +967,7 @@ class Window(QtGui.QMainWindow):
             bean_file.write(',' + text)
             bean_file.close()
         self.initBeans()
+
     # remove bean from disk
     def removeBean(self):
 
@@ -986,18 +1002,19 @@ class Window(QtGui.QMainWindow):
 
                 if (dne == QtGui.QMessageBox.Ok):
                     return
-            if(not self.start_stop):
-                self.current_temp = self.temp_label.text().split(":") 
+            if (not self.start_stop):
+                self.current_temp = self.temp_label.text().split(":")
                 self.current_tbl.setItem(5, 1, QtGui.QTableWidgetItem(str(float(self.current_temp[1]))))
-            self.current_tbl.setItem(5, 0, QtGui.QTableWidgetItem(str(self.minute_count) + ":" + str(self.second_count)))
+            self.current_tbl.setItem(5, 0,
+                                     QtGui.QTableWidgetItem(str(self.minute_count) + ":" + str(self.second_count)))
             self.timer.stop()
             export_dir = QtGui.QFileDialog.getExistingDirectory(self, 'Select Export Directory', '/home')
             self.setExportBean()
             self.directory = str(export_dir + "/" + self.directory)
-            print("This is direcetory:  " + self.directory )
+            print("This is direcetory:  " + self.directory)
 
             if not os.path.exists(self.directory):
-                os.makedirs(self.directory,mode=0o777)
+                os.makedirs(self.directory, mode=0o777)
 
             _tempFile = self.directory + '/Temp.csv'
             export_tempFile = open(_tempFile, 'w+')
@@ -1007,48 +1024,60 @@ class Window(QtGui.QMainWindow):
             temp_writer = csv.writer(export_tempFile, dialect='excel')
             roc_writer = csv.writer(export_rocFile, dialect='excel')
             try:
-                roc_writer.writerow(['Time', 'RoC', 'Gas', 'Air' , 'First Crack' , 'Second Crack','Turning Point', 'Drop Out'])
+                roc_writer.writerow(
+                    ['Time', 'RoC', 'Gas', 'Air', 'First Crack', 'Second Crack', 'Turning Point', 'Drop Out'])
                 temp_writer.writerow(['Time', 'Temp', 'Air', 'First Crack', 'Second Crack', 'Turing Point', 'Drop Out'])
 
                 for i in range(0, (len(self.temp_data) - 1)):
                     temp_writer.writerow(
-                            [i, self.temp_data[i], self.air_data[i], self.temp_first_crack_data[i], self.temp_second_crack_data[i],
-                             self.temp_tp_data[i], self.temp_drop_out_data[i]])
+                        [i, self.temp_data[i], self.air_data[i], self.temp_first_crack_data[i],
+                         self.temp_second_crack_data[i],
+                         self.temp_tp_data[i], self.temp_drop_out_data[i]])
 
                 for i in range(0, (len(self.roc_data) - 1)):
-                    roc_writer.writerow([i, self.roc_data[i], self.gas_data[i],self.air_data[i], self.roc_first_crack_data[i], self.roc_second_crack_data[i],
-                                         self.roc_tp_data[i], self.roc_drop_out_data[i]])
+                    roc_writer.writerow(
+                        [i, self.roc_data[i], self.gas_data[i], self.air_data[i], self.roc_first_crack_data[i],
+                         self.roc_second_crack_data[i],
+                         self.roc_tp_data[i], self.roc_drop_out_data[i]])
             except:
                 print "Unexpected error:", sys.exc_info()[0]
                 pass
             finally:
                 try:
 
-
                     temp_writer.writerow(['Comments:'])
                     temp_writer.writerow(['', 'Time', 'Temp'])
-                    temp_writer.writerow(['Roast Start', self.current_tbl.item(0, 0).text(), self.current_tbl.item(0, 1).text()])
-                    temp_writer.writerow(['First Crack', self.current_tbl.item(1, 0).text(), self.current_tbl.item(1, 1).text()])
-                    temp_writer.writerow(['Second Crack', self.current_tbl.item(2, 0).text(), self.current_tbl.item(2, 1).text()])
                     temp_writer.writerow(
-                            ['Turning Point', self.current_tbl.item(3, 0).text(), self.current_tbl.item(3, 1).text()])
-                    temp_writer.writerow(['Drop Out', self.current_tbl.item(4, 0).text(), self.current_tbl.item(4, 1).text()])
-                    temp_writer.writerow(['Roast End', self.current_tbl.item(5, 0).text(), self.current_tbl.item(5, 1).text()])
+                        ['Roast Start', self.current_tbl.item(0, 0).text(), self.current_tbl.item(0, 1).text()])
+                    temp_writer.writerow(
+                        ['First Crack', self.current_tbl.item(1, 0).text(), self.current_tbl.item(1, 1).text()])
+                    temp_writer.writerow(
+                        ['Second Crack', self.current_tbl.item(2, 0).text(), self.current_tbl.item(2, 1).text()])
+                    temp_writer.writerow(
+                        ['Turning Point', self.current_tbl.item(3, 0).text(), self.current_tbl.item(3, 1).text()])
+                    temp_writer.writerow(
+                        ['Drop Out', self.current_tbl.item(4, 0).text(), self.current_tbl.item(4, 1).text()])
+                    temp_writer.writerow(
+                        ['Roast End', self.current_tbl.item(5, 0).text(), self.current_tbl.item(5, 1).text()])
                     temp_writer.writerow(['Development Time', str(self.dev_label.text()), ""])
 
                     roc_writer.writerow(['Comments:'])
                     roc_writer.writerow(['', 'Time', 'Temp'])
-                    roc_writer.writerow(['Roast Start', self.current_tbl.item(0, 0).text(), self.current_tbl.item(0, 1).text()])
-                    roc_writer.writerow(['First Crack', self.current_tbl.item(1, 0).text(), self.current_tbl.item(1, 1).text()])
-                    roc_writer.writerow(['Second Crack', self.current_tbl.item(2, 0).text(), self.current_tbl.item(2, 1).text()])
-                    roc_writer.writerow(['Turning Point', self.current_tbl.item(3, 0).text(), self.current_tbl.item(3, 1).text()])
-                    roc_writer.writerow(['Drop Out', self.current_tbl.item(4, 0).text(), self.current_tbl.item(4, 1).text()])
-                    roc_writer.writerow(['Roast End', self.current_tbl.item(5, 0).text(), self.current_tbl.item(5, 1).text()])
+                    roc_writer.writerow(
+                        ['Roast Start', self.current_tbl.item(0, 0).text(), self.current_tbl.item(0, 1).text()])
+                    roc_writer.writerow(
+                        ['First Crack', self.current_tbl.item(1, 0).text(), self.current_tbl.item(1, 1).text()])
+                    roc_writer.writerow(
+                        ['Second Crack', self.current_tbl.item(2, 0).text(), self.current_tbl.item(2, 1).text()])
+                    roc_writer.writerow(
+                        ['Turning Point', self.current_tbl.item(3, 0).text(), self.current_tbl.item(3, 1).text()])
+                    roc_writer.writerow(
+                        ['Drop Out', self.current_tbl.item(4, 0).text(), self.current_tbl.item(4, 1).text()])
+                    roc_writer.writerow(
+                        ['Roast End', self.current_tbl.item(5, 0).text(), self.current_tbl.item(5, 1).text()])
                     roc_writer.writerow(['Development Time', self.dev_label.text(), ""])
                     export_tempFile.close()
                     export_rocFile.close()
-
-                    
 
                     print("exported to: " + self.directory)
                 except:
@@ -1070,21 +1099,23 @@ class Window(QtGui.QMainWindow):
                         self.hide()
                         self.exportImages()
                         self.dock_widget.endRoast()
-    def exportImages (self):
+
+    def exportImages(self):
         print("Exporting Images")
         try:
-            QPixmap.grabWidget(self.temp).save(self.directory + '/Temperature vs Time.jpg', 'jpg',-1)
-            QPixmap.grabWidget(self.temp).save(self.directory + '/Roc vs Time.jpg', 'jpg',-1)
-            QPixmap.grabWidget(self).save(self.directory + '/screenshot.jpg', 'jpg',-1)
+            QPixmap.grabWidget(self.temp).save(self.directory + '/Temperature vs Time.jpg', 'jpg', -1)
+            QPixmap.grabWidget(self.temp).save(self.directory + '/Roc vs Time.jpg', 'jpg', -1)
+            QPixmap.grabWidget(self).save(self.directory + '/screenshot.jpg', 'jpg', -1)
 
         except:
             print "Unexpected error:", sys.exc_info()[0]
             pass
 
-    #function for file management and ensuring that all beans are in the same folder.
+    # function for file management and ensuring that all beans are in the same folder.
     def setExportBean(self):
         self.directory = self.beans[0] + self.directory
-    #start/stop function
+
+    # start/stop function
     def ss(self):
         global timer
         if (self.first == True):
@@ -1117,12 +1148,13 @@ class Window(QtGui.QMainWindow):
                     self.savePref()
                     self.current_temp = self.temp_label.text().split(":")
                     self.current_tbl.setItem(5, 1, QtGui.QTableWidgetItem(str(float(self.current_temp[1]))))
-                    self.current_tbl.setItem(5, 0, QtGui.QTableWidgetItem(str(self.minute_count) + ":" + str(self.second_count)))
+                    self.current_tbl.setItem(5, 0, QtGui.QTableWidgetItem(
+                        str(self.minute_count) + ":" + str(self.second_count)))
                     self.timer.stop()
                     self.timer.disconnect(self.timer, QtCore.SIGNAL('timeout()'), self.update)
                     self.timer_thread.stop()
                     self.arduino.disconnect()
-                    #self.setVisible(False)
+                    # self.setVisible(False)
                     print'arduino port closed'
                     # self.dock_widget.endRoast()
 
@@ -1130,19 +1162,21 @@ class Window(QtGui.QMainWindow):
 
                 elif reply == QtGui.QMessageBox.No:
                     pass
-    #first crack fucntion
+
+    # first crack fucntion
     def fcrack(self):
 
         self.temp_first_crack_data[-1] = float(240)
         self.roc_first_crack_data[-1] = float(0.3)
-        self.current_temp = self.temp_label.text().split(":") 
+        self.current_temp = self.temp_label.text().split(":")
         self.current_tbl.setItem(1, 1, QtGui.QTableWidgetItem(str(float(self.current_temp[1]))))
         self.current_tbl.setItem(1, 0, QtGui.QTableWidgetItem(str(self.minute_count) + ":" + str(self.second_count)))
         self.first_crack_bool = True
-        self.fcrack_time_s =  self.minute_count*60 + self.second_count
+        self.fcrack_time_s = self.minute_count * 60 + self.second_count
 
         print 'First Crack'
-    #second crack function
+
+    # second crack function
     def scrack(self):
         self.current_temp = self.temp_label.text().split(":")
         self.temp_second_crack_data[-1] = float(240)
@@ -1151,26 +1185,28 @@ class Window(QtGui.QMainWindow):
         self.current_tbl.setItem(2, 0, QtGui.QTableWidgetItem(str(self.minute_count) + ":" + str(self.second_count)))
 
         print 'Second Crack'
-    #turning point function
+
+    # turning point function
     def turn(self):
-        self.current_temp = self.temp_label.text().split(":") 
+        self.current_temp = self.temp_label.text().split(":")
         self.temp_tp_data[-1] = float(240)
         self.roc_tp_data[-1] = float(0.3)
         self.current_tbl.setItem(3, 1, QtGui.QTableWidgetItem(str(float(self.current_temp[1]))))
         self.current_tbl.setItem(3, 0, QtGui.QTableWidgetItem(str(self.minute_count) + ":" + str(self.second_count)))
 
         print 'Turning point'
+
     # drop out function
     def drop(self):
-        self.current_temp = self.temp_label.text().split(":") 
+        self.current_temp = self.temp_label.text().split(":")
         self.temp_drop_out_data[-1] = float(240)
         self.roc_drop_out_data[-1] = float(0.3)
         self.current_tbl.setItem(4, 1, QtGui.QTableWidgetItem(str(float(self.current_temp[1]))))
         self.current_tbl.setItem(4, 0, QtGui.QTableWidgetItem(str(self.minute_count) + ":" + str(self.second_count)))
         self.first_crack_bool = False
 
-
         print"Drop Out"
+
     # gas level change function
     def gas(self, event):
         self.gas_slider.setFocus(True)
@@ -1185,6 +1221,7 @@ class Window(QtGui.QMainWindow):
         self.gas_slider_label.setFont(b_font)
         b_font.setBold(False)
         self.air_slider_label.setFont(b_font)
+
     # air level change funciton
     def air(self):
         self.air_slider.setFocus(True)
@@ -1194,14 +1231,13 @@ class Window(QtGui.QMainWindow):
         air_gas_dialog.show()
         air_gas_dialog.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
-
         b_font = QtGui.QFont()
         b_font.setBold(True)
         self.air_slider_label.setFont(b_font)
         b_font.setBold(False)
         self.gas_slider_label.setFont(b_font)
 
-    
+
 if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
     splash = QtGui.QSplashScreen(QPixmap((os.path.expanduser("~/Roastery/loading.png"))))
@@ -1209,7 +1245,6 @@ if __name__ == '__main__':
     splash.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint)
 
     splash.show()
-
 
     window = Window()
     # window.connect()
@@ -1222,10 +1257,4 @@ if __name__ == '__main__':
     os.system("defaults write com.SVT.Roastery NSAppSleepDisabled -bool YES")
     window.show()
 
-
     sys.exit(app.exec_())
-  
-
-
-
-

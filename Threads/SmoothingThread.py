@@ -22,7 +22,7 @@ class SmoothingThread(QThread):
                 print ("Exponential Windowed Moving Average")
                 self.ewma()
             elif (self.window.smoothAlgorithm == "savgol"):
-                print ("Savitzky–Golay Filter")
+                print ("Savitzky Golay Filter")
                 self.savgol()
             elif (self.window.smoothAlgorithm == "median"):
                 print ("Median Filter")
