@@ -28,7 +28,9 @@ from RecoveryThread import RecoveryThread
 from GraphPrefDialog import GraphPrefDialog
 from SmoothingDialog import SmoothingDialog
 from RoCThread import RoCThread
-from SmoothingThread import SmoothingThread
+from RoCSmoothingThread import RoCSmoothingThread
+from TempSmoothingThread import TempSmoothingThread
+
 
 ###########################################
 windows = MultiWindows()
@@ -114,9 +116,14 @@ class Window(QtGui.QMainWindow):
         self.delta = None
         self.refresh_rate = None
         self.refresh_counter = 0
+        #smooth Pref
         self.tempSmooth = ''
         self.rocSmooth = ''
         self.smoothAlgorithm = ''
+        self.temp_window_size = None
+        self.roc_window_size = None
+
+        #Graph Pref
         self.showLegend = ''
         self.int = ''
         self.scale = 2
@@ -570,30 +577,18 @@ class Window(QtGui.QMainWindow):
 
     # timed thread that calls update function to collect serial data, smooth, etc
     def update(self):
+
         self.elapsed = round(time.time() - self.s_time, 1)
         if (self.elapsed > 1):
             print("Elapsed Time: " + str(self.elapsed))
 
         self.line = self.arduino.readline()
         self.first = True
-        self.line = round(float(self.line), 1)
+        self.line = round(float(self.line), 2)
 
-        self.temp_temp.append(float(self.line))
-        if (self.tempSmooth == "True"):
-            try:
-                # self.temp_label.setText('        TEMP:' + str(round(float((self.temp_temp[-1] + self.temp_temp[-2] + self.temp_temp[-3]) / 3),1)))
-                self.temp_label.setText(
-                    '        TEMP:' + str(round((self.temp_temp[-1] * 0.1 + self.temp_temp[-2] * 0.9), 1)))
-
-            except:
-                self.temp_label.setText('        TEMP:' + str((self.line)))
-                if (self.start_stop == False):
-                    self.offset += 1
-                pass
-        else:
+        if self.start_stop == False:
             self.temp_label.setText('        TEMP:' + str((self.line)))
-
-        if (self.start_stop == True):
+        else:
 
             if ((self.second_count == 59) or ((self.second_count_minus_1 > 50) and (self.second_count < 10))):
                 self.minute_count += 1
@@ -619,27 +614,32 @@ class Window(QtGui.QMainWindow):
                     continue
 
             self.count += 1
-
-            rocThread = RoCThread(self)
-            rocThread.finished.connect(self.onRoCFinished)
-            rocThread.start()
-
-
-
-            # while (self.grapherThread.isRunning()):
-            #     continue
+            if(self.tempSmooth =="True"):
+                tempSmoothThread = TempSmoothingThread(self)
+                tempSmoothThread.finished.connect(self.onTempSmoothFinished)
+                tempSmoothThread.start()
+            else:
+                rocThread = RoCThread(self)
+                rocThread.finished.connect(self.onRoCFinished)
+                rocThread.start()
 
         self.s_time = time.time()
         # time.sleep()
-    #Signal for RoCThread completion
+
+    def onTempSmoothFinished(self):
+        rocThread = RoCThread(self)
+        rocThread.finished.connect(self.onRoCFinished)
+        rocThread.start()
+
+    # Signal for RoCThread completion
     def onRoCFinished(self):
         try:
             # print("RoC calcucalted: Graph results.")
 
             ###################SMOOTHIONG THREADS ###############################
-            if (self.tempSmooth == "True" or self.rocSmooth == "True"):
-                smoothingThread = SmoothingThread(self)
-                smoothingThread.finished.connect(self.onSmoothFinished)
+            if ( self.rocSmooth == "True"):
+                smoothingThread = RoCSmoothingThread(self)
+                smoothingThread.finished.connect(self.onRoCSmoothFinished)
                 smoothingThread.start()
             else:
                 grapherThread = GrapherThread(self)
@@ -652,15 +652,17 @@ class Window(QtGui.QMainWindow):
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             print(exc_type, fname, exc_tb.tb_lineno)
             pass
-    #Signal for SmoothThread Completion
-    def onSmoothFinished(self):
-        print("Smoothing Done.")
+
+    # Signal for RoCSmoothThread Completion
+    def onRoCSmoothFinished(self):
+        # print("Smoothing Done.")
         grapherThread = GrapherThread(self)
         grapherThread.finished.connect(self.onGraphFinished)
         grapherThread.start()
 
     def onGraphFinished(self):
-        print("Graph done.")
+        # print("Graph done.")
+        self.temp_label.setText('        TEMP:' + str((self.line)))
 
     # terminate application on shortcut keys
     def quit(self):
@@ -711,6 +713,14 @@ class Window(QtGui.QMainWindow):
                 val = line.split('=')
                 self.smoothAlgorithm = str(val[1]).strip('\n')
                 print("Smoothing Algorithm: ", self.smoothAlgorithm)
+            if (line.__contains__('temp_window_size')):
+                val = line.split('=')
+                self.temp_window_size = int(str(val[1]).strip('\n'))
+                print("Temperature Smoothing Window Size : ", self.temp_window_size)
+            if (line.__contains__('roc_window_size')):
+                val = line.split('=')
+                self.roc_window_size = int(str(val[1]).strip('\n'))
+                print("RoC Smoothing Window Size : ", self.roc_window_size)
             if (line.__contains__('show_legend')):
                 val = line.split('=')
                 self.showLegend = str(val[1]).strip('\n')
@@ -737,6 +747,8 @@ class Window(QtGui.QMainWindow):
             pref_file.write('temp_smooth=' + str(self.tempSmooth) + "\n")
             pref_file.write('roc_smooth=' + str(self.rocSmooth) + "\n")
             pref_file.write('smooth_algorithm=' + str(self.smoothAlgorithm) + "\n")
+            pref_file.write('temp_window_size=' + str(self.temp_window_size) + "\n")
+            pref_file.write('roc_window_size=' + str(self.roc_window_size) + "\n")
             pref_file.write('show_legend=' + str(self.showLegend) + "\n")
             pref_file.write('int=' + str(self.int) + "\n")
             pref_file.write('scale=' + str(self.scale))
@@ -752,6 +764,8 @@ class Window(QtGui.QMainWindow):
             pref_file.write('temp_smooth=' + str(self.tempSmooth) + "\n")
             pref_file.write('roc_smooth=' + str(self.rocSmooth) + "\n")
             pref_file.write('smooth_algorithm=' + str(self.smoothAlgorithm) + "\n")
+            pref_file.write('temp_window_size=' + str(self.temp_window_size) + "\n")
+            pref_file.write('roc_window_size=' + str(self.roc_window_size) + "\n")
             pref_file.write('show_legend=' + str(self.showLegend) + "\n")
             pref_file.write('int=' + str(self.int) + "\n")
             pref_file.write('scale=' + str(self.scale))

@@ -113,56 +113,55 @@ class GrapherThread(QThread):
 
     def updateTemp(self):
         if (self.window.count > 1):
-            try:
+            #try:
 
-                self.window.time_data.append(self.window.t.elapsed())
-                if (self.window.tempSmooth == "True"):
-                    try:
-                        self.window.temp_data.append(
-                            round(float((self.window.line * 0.1 + self.window.temp_data[-1] * 0.9)), 1))
-                    except:
-                        self.window.temp_data.append(float(self.window.line))
-                        pass
-                else:
-                    self.window.temp_data.append(float(self.window.line))
+            self.window.time_data.append(self.window.t.elapsed())
+            # if (self.window.tempSmooth == "True"):
+            #     try:
+            #         self.window.temp_data.append(
+            #             round(float((self.window.line * 0.1 + self.window.temp_data[-1] * 0.9)), 1))
+            #     except:
+            #         self.window.temp_data.append(float(self.window.line))
+            #         pass
+            # else:
+            self.window.temp_data.append(float(self.window.line))
 
-                air_lvl = float(self.window.air_slider.value())
+            air_lvl = float(self.window.air_slider.value())
 
-                self.window.air_data.append(air_lvl * 2.4)
+            self.window.air_data.append(air_lvl * 2.4)
 
-                self.window.global_count += 1
+            self.window.global_count += 1
 
-                self.x_time = np.array(self.window.time_data)
-                y_temp = np.array(self.window.temp_data)
-                self.y_air = np.array(self.window.air_data)
+            self.x_time = np.array(self.window.time_data)
+            y_temp = np.array(self.window.temp_data)
+            self.y_air = np.array(self.window.air_data)
 
-                self.window.temp_tp_data.append(float(0))
-                self.window.temp_first_crack_data.append((float(0)))
-                self.window.temp_second_crack_data.append((float(0)))
-                self.window.temp_drop_out_data.append(float(0))
+            self.window.temp_tp_data.append(float(0))
+            self.window.temp_first_crack_data.append((float(0)))
+            self.window.temp_second_crack_data.append((float(0)))
+            self.window.temp_drop_out_data.append(float(0))
 
-                self.window.temp_curve.setData(x=self.x_time, y=y_temp)
-                self.window.temp_air_curve.setData(x=self.x_time, y=self.y_air)
-                self.window.temp_first_crack.setData(x=self.x_time, y=np.array(self.window.temp_first_crack_data))
-                self.window.temp_second_crack_curve.setData(x=self.x_time,
-                                                            y=np.array(self.window.temp_second_crack_data))
-                self.window.temp_drop_out.setData(x=self.x_time, y=np.array(self.window.temp_drop_out_data))
-                self.window.temp_tp.setData(x=self.x_time, y=np.array(self.window.temp_tp_data))
+            self.window.temp_curve.setData(x=self.x_time, y=y_temp)
+            self.window.temp_air_curve.setData(x=self.x_time, y=self.y_air)
+            self.window.temp_first_crack.setData(x=self.x_time, y=np.array(self.window.temp_first_crack_data))
+            self.window.temp_second_crack_curve.setData(x=self.x_time,
+                                                        y=np.array(self.window.temp_second_crack_data))
+            self.window.temp_drop_out.setData(x=self.x_time, y=np.array(self.window.temp_drop_out_data))
+            self.window.temp_tp.setData(x=self.x_time, y=np.array(self.window.temp_tp_data))
 
 
-                # self.window.count += 1
-            except:
-                exc_type, exc_obj, exc_tb = sys.exc_info()
-                fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-                print(exc_type, fname, exc_tb.tb_lineno)
-                # self.window.count += 1
-                pass
+            # self.window.count += 1
+            # except:
+            #     exc_type, exc_obj, exc_tb = sys.exc_info()
+            #     fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            #     print(exc_type, fname, exc_tb.tb_lineno)
+            #     # self.window.count += 1
+            #     pass
 
 
     def correctNone(self):
         try:
             if (self.window.temp_data[0] == 0):
-                self.window.temp_temp[0] = self.window.line
                 self.window.temp_data[0] = self.window.line
         except:
             exc_type, exc_obj, exc_tb = sys.exc_info()

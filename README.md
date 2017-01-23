@@ -7,6 +7,7 @@ Open Source Coffee Roast Monitoring Software
 *	PyQt4
 *	Numpy
 *	PyQtGraph
+*	SciPy
 
 ## Usage
 Fork this repository and run Rosetta.py

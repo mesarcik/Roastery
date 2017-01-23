@@ -88,9 +88,9 @@ void loop(void)
 { 
 
    for (int i = 0; i<sizeof(array)/sizeof(float);i++){
-//       Serial.println(array[i]); 
-        exp_smoothing_filter.Filter(array[i]);
-        Serial.println(exp_smoothing_filter.Current());
+       Serial.println(array[i]); 
+//        exp_smoothing_filter.Filter(array[i]);
+//        Serial.println(exp_smoothing_filter.Current());
         delay(900);
    }
   

@@ -37,32 +37,36 @@ class SmoothingDialog(QtGui.QDialog):
         self.radio_group = QtGui.QButtonGroup()
         self.ewma_button = QtGui.QRadioButton('EWMA Filter')
         self.ewma_button.setToolTip("Exponential Weighted Moving Average")
-        self.ewma_button.setEnabled(False)
         self.median_button = QtGui.QRadioButton('Median Filter')
-        self.median_button.setEnabled(False)
         self.savgol_button = QtGui.QRadioButton('Savitzky-Golay Filter')
-        self.savgol_button.setEnabled(False)
         self.window_button = QtGui.QRadioButton('Moving Average Filter')
 
+        self.radio_select()
+
         self.temp_window_size_slider = QtGui.QSlider(QtCore.Qt.Horizontal)
-        self.temp_window_size_slider.setValue(window.delta)
-        self.temp_window_size_slider.setRange(1,100)
+        self.temp_window_size_slider.setValue(int(self.window.temp_window_size))
+        self.temp_window_size_slider.setMinimum(1)
+        self.temp_window_size_slider.setMaximum(101)
         self.temp_window_size_slider.setTickPosition(QtGui.QSlider.TicksBothSides)
-        self.temp_window_size_slider.setTickInterval(10)
-        self.temp_window_size_slider.setSingleStep(10)
+        # self.temp_window_size_slider.setTickInterval(2)
+        self.temp_window_size_slider.setSingleStep(2)
         self.temp_window_size_slider.valueChanged.connect(self.slider_change)
         self.temp_window_size_label = QtGui.QLabel('Temperature Smoothing Window Size')
-        self.temp_window_size_val = QtGui.QLabel(str(window.delta) + ' samples')
+        self.temp_window_size_val = QtGui.QLabel(str(self.window.temp_window_size) + ' samples')
 
         self.roc_window_size_slider = QtGui.QSlider(QtCore.Qt.Horizontal)
-        self.roc_window_size_slider.setValue(window.sampling_interval)
-        self.roc_window_size_slider.setRange(1,100)
+        self.roc_window_size_slider.setValue(int(self.window.roc_window_size))
+        self.roc_window_size_slider.setMinimum(1)
+        self.roc_window_size_slider.setMaximum(101)
         self.roc_window_size_slider.setTickPosition(QtGui.QSlider.TicksBothSides)
-        self.roc_window_size_slider.setTickInterval(10)
-        self.roc_window_size_slider.setSingleStep(10)
+        # self.roc_window_size_slider.setTickInterval(2)
+        self.roc_window_size_slider.setSingleStep(2)
         self.roc_window_size_slider.valueChanged.connect(self.slider_change)
         self.roc_window_size_label = QtGui.QLabel('RoC Smoothing Window Size')
-        self.roc_window_size_val = QtGui.QLabel(str(window.sampling_interval) + ' samples')
+        self.roc_window_size_val = QtGui.QLabel(str(window.roc_window_size) + ' samples')
+
+
+
 
         self.initUI()
 
@@ -120,11 +124,29 @@ class SmoothingDialog(QtGui.QDialog):
         self.show()
 
     def slider_change(self):
-        self.temp_window_size_val.setText(str(self.temp_window_size_slider.value()) + ' samples')
-        # self.window.delta = self.window_size_slider.value()
-        self.roc_window_size_val.setText(str(self.roc_window_size_slider.value()) + " samples")
-        # self.window.sampling_interval = self.sampling_slider.value()
+        ##MAKE SURE SLIDER ODD FOR WINDOW SIZE!
+        while(int(self.temp_window_size_slider.value())%2 ==0):
+            self.temp_window_size_slider.setValue(int(self.temp_window_size_slider.value()) + 1)
 
+        self.temp_window_size_val.setText(str(self.temp_window_size_slider.value()) + ' samples')
+        self.window.temp_window_size = self.temp_window_size_slider.value()
+
+        while (int(self.roc_window_size_slider.value()) % 2 == 0):
+            self.roc_window_size_slider.setValue(int(self.roc_window_size_slider.value()) + 1)
+
+        self.roc_window_size_val.setText(str(self.roc_window_size_slider.value()) + " samples")
+        self.window.roc_window_size = self.roc_window_size_slider.value()
+        # self.window.window_size =
+
+    def radio_select(self):
+        if (self.window.smoothAlgorithm == "avg"):
+            self.window_button.setChecked(True)
+        elif (self.window.smoothAlgorithm == "ewma"):
+            self.ewma_button.setChecked(True)
+        elif (self.window.smoothAlgorithm == "savgol"):
+            self.savgol_button.setChecked(True)
+        else:
+            self.median_button.setChecked(True)
 
     def radio_change(self):
 
