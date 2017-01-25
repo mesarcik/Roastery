@@ -34,8 +34,11 @@ class RoCThread(QThread):
                 if (self.window.count > self.window.delta):
 
                     if (self.window.rocMethod.__contains__('point')):  # Point Average
-                        self.window.roc_temp = (self.window.temp_data[self.window.count - 1] - self.window.temp_data[
-                            self.window.count - int(self.window.delta)]) / int(self.window.delta)
+                        # print("This is window count",self.window.count)
+                        # print("This is delta ",self.window.delta)
+                        # print("This is temp data size " , len(self.window.temp_data))
+                        self.window.roc_temp = (self.window.temp_data[self.window.count - 2] - self.window.temp_data[self.window.count -2 - int(self.window.delta)]) / int(self.window.delta)
+                        #minus 2 because counter starts at one and not zero.
                     elif (self.window.rocMethod.__contains__('window')):  # Moving self.window Average
                         frame_tot = 0
                         for point in range(self.window.count - 3 - int(self.window.delta + 1),

@@ -1,3 +1,4 @@
+from __future__ import division
 from pyqtgraph.Qt import QtGui, QtCore
 
 class SmoothingDialog(QtGui.QDialog):
@@ -41,7 +42,7 @@ class SmoothingDialog(QtGui.QDialog):
         self.savgol_button = QtGui.QRadioButton('Savitzky-Golay Filter')
         self.window_button = QtGui.QRadioButton('Moving Average Filter')
 
-        self.radio_select()
+
 
         self.temp_window_size_slider = QtGui.QSlider(QtCore.Qt.Horizontal)
         self.temp_window_size_slider.setValue(int(self.window.temp_window_size))
@@ -54,6 +55,7 @@ class SmoothingDialog(QtGui.QDialog):
         self.temp_window_size_label = QtGui.QLabel('Temperature Smoothing Window Size')
         self.temp_window_size_val = QtGui.QLabel(str(self.window.temp_window_size) + ' samples')
 
+
         self.roc_window_size_slider = QtGui.QSlider(QtCore.Qt.Horizontal)
         self.roc_window_size_slider.setValue(int(self.window.roc_window_size))
         self.roc_window_size_slider.setMinimum(1)
@@ -65,8 +67,18 @@ class SmoothingDialog(QtGui.QDialog):
         self.roc_window_size_label = QtGui.QLabel('RoC Smoothing Window Size')
         self.roc_window_size_val = QtGui.QLabel(str(window.roc_window_size) + ' samples')
 
+        self.exp_weight_slider = QtGui.QSlider(QtCore.Qt.Horizontal)
+        self.exp_weight_slider.setValue(int(self.window.exp_weight*100))
+        self.exp_weight_slider.setMinimum(10)
+        self.exp_weight_slider.setMaximum(100)
+        self.exp_weight_slider.setTickPosition(QtGui.QSlider.TicksBothSides)
+        self.exp_weight_slider.setSingleStep(10)
+        self.exp_weight_slider.valueChanged.connect(self.slider_change)
+        self.exp_weight_label = QtGui.QLabel('Exponential Weight')
+        self.exp_weight_val = QtGui.QLabel(str(window.exp_weight) )
+        self.exp_weight_slider.setEnabled(False)
 
-
+        self.radio_select()
 
         self.initUI()
 
@@ -112,13 +124,19 @@ class SmoothingDialog(QtGui.QDialog):
         roc_window_size_layout.addWidget(self.roc_window_size_val, 0, 2)
         self.dialog_layout.addLayout(roc_window_size_layout, 3, 0, 1, 3)
 
+        exp_weight_layout = QtGui.QGridLayout()
+        exp_weight_layout.addWidget(self.exp_weight_label, 0, 0)
+        exp_weight_layout.addWidget(self.exp_weight_slider, 0, 1)
+        exp_weight_layout.addWidget(self.exp_weight_val, 0, 2)
+        self.dialog_layout.addLayout(exp_weight_layout, 4, 0, 1, 3)
 
 
-        self.dialog_layout.addWidget(self.title, 4, 0)
-        self.dialog_layout.addWidget(self.savgol_button, 5, 0)
-        self.dialog_layout.addWidget(self.window_button, 5, 1)
-        self.dialog_layout.addWidget(self.ewma_button, 5, 2)
-        self.dialog_layout.addWidget(self.median_button, 5, 3)
+
+        self.dialog_layout.addWidget(self.title, 5, 0)
+        self.dialog_layout.addWidget(self.savgol_button, 6, 0)
+        self.dialog_layout.addWidget(self.window_button, 6, 1)
+        self.dialog_layout.addWidget(self.ewma_button, 6, 2)
+        self.dialog_layout.addWidget(self.median_button, 6, 3)
         self.dialog_layout.setAlignment(QtCore.Qt.AlignLeft)
 
         self.show()
@@ -136,13 +154,17 @@ class SmoothingDialog(QtGui.QDialog):
 
         self.roc_window_size_val.setText(str(self.roc_window_size_slider.value()) + " samples")
         self.window.roc_window_size = self.roc_window_size_slider.value()
-        # self.window.window_size =
+
+        rounded_val =round(self.exp_weight_slider.value()/100,1)
+        self.exp_weight_val.setText(str(rounded_val))
+        self.window.exp_weight = rounded_val
 
     def radio_select(self):
         if (self.window.smoothAlgorithm == "avg"):
             self.window_button.setChecked(True)
         elif (self.window.smoothAlgorithm == "ewma"):
             self.ewma_button.setChecked(True)
+            self.exp_weight_slider.setEnabled(True)
         elif (self.window.smoothAlgorithm == "savgol"):
             self.savgol_button.setChecked(True)
         else:
@@ -152,12 +174,16 @@ class SmoothingDialog(QtGui.QDialog):
 
         if (self.window_button.isChecked()):
             self.window.smoothAlgorithm = 'avg'
+            self.exp_weight_slider.setEnabled(False)
         elif (self.ewma_button.isChecked()):
             self.window.smoothAlgorithm = 'ewma'
+            self.exp_weight_slider.setEnabled(True)
         elif (self.savgol_button.isChecked()):
             self.window.smoothAlgorithm = 'savgol'
+            self.exp_weight_slider.setEnabled(False)
         elif (self.median_button.isChecked()):
             self.window.smoothAlgorithm = 'median'
+            self.exp_weight_slider.setEnabled(False)
 
 
     def showEvent(self, event):

@@ -6,6 +6,7 @@ from scipy.signal import medfilt
 import sys
 import os
 import copy
+import math
 
 class RoCSmoothingThread(QThread):
     finished = pyqtSignal()
@@ -13,6 +14,7 @@ class RoCSmoothingThread(QThread):
     def __init__(self, window):
         QThread.__init__(self)
         self.window = window
+        self.weighted_roc = 0
 
     def __del__(self):
         self.wait()
@@ -21,19 +23,19 @@ class RoCSmoothingThread(QThread):
         try:
             # print("Smoothing Thread Spawned.")
             if (self.window.smoothAlgorithm == "avg"):
-                print ("Moving Window Average")
+                #print ("Moving Window Average")
                 if (self.window.roc_window_size < len(self.window.roc_data) and  self.window.rocSmooth == "True"):
                     self.mov_avg_roc()
             elif (self.window.smoothAlgorithm == "ewma"):
-                print ("Exponential Windowed Moving Average")
+                #print ("Exponential Windowed Moving Average")
                 if (self.window.roc_window_size < len(self.window.roc_data) and self.window.rocSmooth == "True"):
                     self.ewma_roc()
             elif (self.window.smoothAlgorithm == "savgol"):
-                print ("Savitzky Golay Filter")
+                #print ("Savitzky Golay Filter")
                 if (self.window.roc_window_size < len(self.window.roc_data) and self.window.rocSmooth == "True"):
                     self.savgol_roc()
             elif (self.window.smoothAlgorithm == "median"):
-                print ("Median Filter")
+                #print ("Median Filter")
                 if (self.window.roc_window_size < len(self.window.roc_data) and self.window.rocSmooth == "True"):
                     self.median_roc()
 
@@ -65,7 +67,24 @@ class RoCSmoothingThread(QThread):
     ##################################333
 
     def ewma_roc(self):
-        pass
+
+        self.weighted_roc = self.window.exp_weight* self.window.roc_temp
+        exp = 1;
+        for i in range (1,self.window.roc_window_size):
+            #print("exp weight: " , round(self.window.exp_weight*math.pow((1-self.window.exp_weight),exp),4))
+            #print("exp: " ,exp)
+            #print("index:" , -i)
+            # print('weighted roc : ',self.weighted_roc)
+            temp =   round(self.window.exp_weight*math.pow((1-self.window.exp_weight),exp),4) * self.window.roc_data[-i]
+            self.weighted_roc += temp
+            exp+=1
+
+        self.weighted_roc = round(self.weighted_roc,2)
+        print("Previous RoC",self.window.roc_temp)
+
+        print("Weighted RoC",self.weighted_roc)
+
+        self.window.roc_temp = self.weighted_roc
 
     ####################################
 

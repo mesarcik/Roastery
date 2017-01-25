@@ -122,6 +122,7 @@ class Window(QtGui.QMainWindow):
         self.smoothAlgorithm = ''
         self.temp_window_size = None
         self.roc_window_size = None
+        self.exp_weight = None
 
         #Graph Pref
         self.showLegend = ''
@@ -447,10 +448,13 @@ class Window(QtGui.QMainWindow):
             continue
         if (self.arduino.port_bool == 0):
             msgBox = QtGui.QMessageBox()
-            msgBox.setText("Thermocouple systems cannot be reached\n\nError Encountered: ")
+            msgBox.setText("Thermocouple system not detected")
             msgBox.setInformativeText("Please diconnect and reconnect USB cable")
-            msgBox.setWindowTitle("ERROR")
-            msgBox.setDefaultButton(QtGui.QMessageBox.Ok)
+            msgBox.setWindowTitle("Thermocouple Error")
+            resolution = QtGui.QDesktopWidget().screenGeometry()
+            msgBox.move((resolution.width() / 2)- (self.frameSize().width() / 2),
+                      (resolution.height() / 2) - (self.frameSize().height() / 2))
+
             ret = msgBox.exec_()
             if ret == QtGui.QMessageBox.Ok:
                 self.quit()
@@ -613,15 +617,17 @@ class Window(QtGui.QMainWindow):
                 while (recoveryThread.isRunning()):
                     continue
 
-            self.count += 1
+
             if(self.tempSmooth =="True"):
                 tempSmoothThread = TempSmoothingThread(self)
                 tempSmoothThread.finished.connect(self.onTempSmoothFinished)
                 tempSmoothThread.start()
+                self.count += 1
             else:
                 rocThread = RoCThread(self)
                 rocThread.finished.connect(self.onRoCFinished)
                 rocThread.start()
+                self.count += 1
 
         self.s_time = time.time()
         # time.sleep()
@@ -721,6 +727,10 @@ class Window(QtGui.QMainWindow):
                 val = line.split('=')
                 self.roc_window_size = int(str(val[1]).strip('\n'))
                 print("RoC Smoothing Window Size : ", self.roc_window_size)
+            if (line.__contains__('exp_weight')):
+                val = line.split('=')
+                self.exp_weight = float(str(val[1]).strip('\n'))
+                print("Exp Weight : ", self.exp_weight)
             if (line.__contains__('show_legend')):
                 val = line.split('=')
                 self.showLegend = str(val[1]).strip('\n')
@@ -749,6 +759,7 @@ class Window(QtGui.QMainWindow):
             pref_file.write('smooth_algorithm=' + str(self.smoothAlgorithm) + "\n")
             pref_file.write('temp_window_size=' + str(self.temp_window_size) + "\n")
             pref_file.write('roc_window_size=' + str(self.roc_window_size) + "\n")
+            pref_file.write('exp_weight=' + str(self.exp_weight) + "\n")
             pref_file.write('show_legend=' + str(self.showLegend) + "\n")
             pref_file.write('int=' + str(self.int) + "\n")
             pref_file.write('scale=' + str(self.scale))
@@ -766,6 +777,7 @@ class Window(QtGui.QMainWindow):
             pref_file.write('smooth_algorithm=' + str(self.smoothAlgorithm) + "\n")
             pref_file.write('temp_window_size=' + str(self.temp_window_size) + "\n")
             pref_file.write('roc_window_size=' + str(self.roc_window_size) + "\n")
+            pref_file.write('exp_weight=' + str(self.exp_weight) + "\n")
             pref_file.write('show_legend=' + str(self.showLegend) + "\n")
             pref_file.write('int=' + str(self.int) + "\n")
             pref_file.write('scale=' + str(self.scale))

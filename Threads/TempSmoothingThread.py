@@ -6,6 +6,7 @@ from scipy.signal import medfilt
 import sys
 import os
 import copy
+import math
 
 
 class TempSmoothingThread(QThread):
@@ -14,6 +15,7 @@ class TempSmoothingThread(QThread):
     def __init__(self, window):
         QThread.__init__(self)
         self.window = window
+        self.weighted_temp = 0
 
     def __del__(self):
         self.wait()
@@ -22,20 +24,20 @@ class TempSmoothingThread(QThread):
         try:
             # print("Smoothing Thread Spawned.")
             if (self.window.smoothAlgorithm == "avg"):
-                print ("Moving Window Average")
+                # print ("Moving Window Average")
                 if (self.window.temp_window_size < len(self.window.temp_data) and self.window.tempSmooth == "True"):
                     self.mov_avg_temp()
             elif (self.window.smoothAlgorithm == "ewma"):
-                print ("Exponential Windowed Moving Average")
+                # print ("Exponential Windowed Moving Average")
                 if (self.window.temp_window_size < len(self.window.temp_data) and self.window.tempSmooth == "True"):
                     self.ewma_temp()
             elif (self.window.smoothAlgorithm == "savgol"):
-                print ("Savitzky Golay Filter")
+                # print ("Savitzky Golay Filter")
                 if (self.window.temp_window_size < len(self.window.temp_data) and self.window.tempSmooth == "True"):
                     self.savgol_temp()
 
             elif (self.window.smoothAlgorithm == "median"):
-                print ("Median Filter")
+                # print ("Median Filter")
                 if (self.window.temp_window_size < len(self.window.temp_data) and self.window.tempSmooth == "True"):
                     self.median_temp()
 
@@ -65,7 +67,24 @@ class TempSmoothingThread(QThread):
 
     ##################################333
     def ewma_temp(self):
-        pass
+
+        self.weighted_temp = self.window.exp_weight*self.window.line
+        exp = 1;
+        for i in range (1,self.window.temp_window_size):
+            #print("exp weight: " , round(self.window.exp_weight*math.pow((1-self.window.exp_weight),exp),4))
+            #print("exp: " ,exp)
+            #print("index:" , -i)
+            # print('weighted temp : ',weighted_temp)
+            temp =   round(self.window.exp_weight*math.pow((1-self.window.exp_weight),exp),4) * self.window.temp_data[-i]
+            self.weighted_temp += temp
+            exp+=1
+
+        self.weighted_temp = round(self.weighted_temp,1)
+        print("Previous Temp",self.window.line)
+
+        print("Weighted Temp",self.weighted_temp)
+
+        self.window.line = self.weighted_temp
 
     ####################################
     def median_temp(self):
