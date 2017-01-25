@@ -123,6 +123,7 @@ class Window(QtGui.QMainWindow):
         self.temp_window_size = None
         self.roc_window_size = None
         self.exp_weight = None
+        self.kernel_size = None
 
         #Graph Pref
         self.showLegend = ''
@@ -731,6 +732,10 @@ class Window(QtGui.QMainWindow):
                 val = line.split('=')
                 self.exp_weight = float(str(val[1]).strip('\n'))
                 print("Exp Weight : ", self.exp_weight)
+            if (line.__contains__('kernel_size')):
+                val = line.split('=')
+                self.kernel_size = float(str(val[1]).strip('\n'))
+                print("Kernel Size : ", self.kernel_size)
             if (line.__contains__('show_legend')):
                 val = line.split('=')
                 self.showLegend = str(val[1]).strip('\n')
@@ -760,6 +765,7 @@ class Window(QtGui.QMainWindow):
             pref_file.write('temp_window_size=' + str(self.temp_window_size) + "\n")
             pref_file.write('roc_window_size=' + str(self.roc_window_size) + "\n")
             pref_file.write('exp_weight=' + str(self.exp_weight) + "\n")
+            pref_file.write('kernel_size=' + str(self.kernel_size) + "\n")
             pref_file.write('show_legend=' + str(self.showLegend) + "\n")
             pref_file.write('int=' + str(self.int) + "\n")
             pref_file.write('scale=' + str(self.scale))
@@ -778,6 +784,7 @@ class Window(QtGui.QMainWindow):
             pref_file.write('temp_window_size=' + str(self.temp_window_size) + "\n")
             pref_file.write('roc_window_size=' + str(self.roc_window_size) + "\n")
             pref_file.write('exp_weight=' + str(self.exp_weight) + "\n")
+            pref_file.write('kernel_size=' + str(self.kernel_size) + "\n")
             pref_file.write('show_legend=' + str(self.showLegend) + "\n")
             pref_file.write('int=' + str(self.int) + "\n")
             pref_file.write('scale=' + str(self.scale))

@@ -88,5 +88,15 @@ class TempSmoothingThread(QThread):
 
     ####################################
     def median_temp(self):
-        pass
+        temp_d = copy.deepcopy(self.window.temp_data)
+        temp_d.append(self.window.line)
+        median_ar = temp_d[-self.window.temp_window_size:]
+        output = medfilt(median_ar,int(self.window.kernel_size))
+        output = round(output[-1],1)
+
+        print("Previous Temp", self.window.line)
+
+        print("Filtered Temp", output)
+
+        self.window.line = output
        ######################################

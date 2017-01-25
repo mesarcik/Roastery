@@ -90,5 +90,21 @@ class RoCSmoothingThread(QThread):
 
 
     def median_roc(self):
-        pass
-        ######################################
+        # print ("This is parent roc data: " ,self.window.roc_data)
+        roc_d = copy.deepcopy(self.window.roc_data)
+        roc_d.append(self.window.roc_temp)
+        median_ar = roc_d[-self.window.roc_window_size:]
+       # print("This is median arr:" , median_ar)
+        median_ar=np.trim_zeros(median_ar)
+        #print("This is trimmed median arr: " , median_ar)
+
+        if int(self.window.kernel_size) > len(median_ar):
+            pass
+
+        else:
+            output = medfilt(median_ar, int(self.window.kernel_size))
+            # print("This is output: " , output)
+            temp = round(output[-1], 2)
+            print("Previous RoC", self.window.roc_temp)
+            print("Filtered Temp", output[-1])
+            self.window.roc_temp = output[-1]
