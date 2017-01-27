@@ -17,6 +17,8 @@ class GrapherThread(QThread):
         self.window = window
         self.y_air = []
         self.x_time = []
+        # self.window.line = round(self.window.line,2)
+        # self.window.roc_temp = round(self.window.roc_temp,2)
 
     def __del__(self):
         self.wait()
@@ -102,8 +104,9 @@ class GrapherThread(QThread):
             self.window.refresh_counter = 0
 
     def turnP(self):
+        zeroless =  np.trim_zeros(self.window.roc_data)
         if (self.window.tp_bool == False):
-            if (len(self.window.roc_data) > 10):
+            if (len(zeroless) > 10):
                 if (self.window.roc_data[-9] < 0):
                     if (self.window.roc_data[-1] > 0):
                         self.window.temp_tp_data[-1] = float(240)

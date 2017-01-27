@@ -96,7 +96,7 @@ void loop(void)
     Serial.println(counter);
     if (counter < 200){
 //      counter = counter +float(random(-50, 100))/100.0;
-        counter = counter + 0.25+ +float(random(-50, 50))/100.0;
+        counter = counter + 0.25+ +float(random(-10, 10))/100.0;
     }else{
       counter = 30;
     }

@@ -51,18 +51,46 @@ class RoCSmoothingThread(QThread):
 
     def savgol_roc(self):
         # Create a temporary data array with the new roc data appended.
-        roc_d = copy.deepcopy (self.window.roc_data)
-        roc_d.append(self.window.roc_temp)
-        # Smooth the values.
-        yhat = savgol_filter(roc_d, self.window.temp_window_size, 3)  # window size 51, polynomial order 3
-        # pop the last value off and set that as the incomming temperature value.
-        self.window.roc_temp = round(float(yhat[-1]), 1)
-        self.window.roc_data= np.ndarray.tolist(yhat[:-1])
+
+        roc_d = copy.deepcopy(self.window.roc_data)
+
+        sav_ar = roc_d[-self.window.roc_window_size:]
+        sav_ar = np.trim_zeros(sav_ar)
+        sav_ar.append(self.window.roc_temp)
+
+        if int(self.window.roc_window_size) > len(sav_ar):
+            pass
+        else:
+            # Smooth the values.
+            yhat = savgol_filter(sav_ar, self.window.roc_window_size, 3)  # window size 51, polynomial order 3
+
+            # pop the last value off and set that as the incomming temperature value.
+            print("Previous RoC", self.window.roc_temp)
+            print("Filtered RoC", yhat[-1])
+            self.window.roc_temp = round(float(yhat[-1]), 1)
 
     #####################################
 
     def mov_avg_roc(self):
-        pass
+        # print ("This is parent roc data: " ,self.window.roc_data)
+        roc_d = copy.deepcopy(self.window.roc_data)
+        roc_d.append(self.window.roc_temp)
+        avg_ar = roc_d[-self.window.roc_window_size:]
+        # print("This is median arr:" , median_ar)
+        avg_ar = np.trim_zeros(avg_ar)
+        # print("This is trimmed median arr: " , median_ar)
+
+        if int(self.window.kernel_size) > len(avg_ar):
+            pass
+
+        else:
+            output = np.convolve(avg_ar, np.ones((int(self.window.kernel_size),)) / int(self.window.kernel_size),
+                                 mode='valid')
+            # print("This is output: " , output)
+            temp = round(output[-1], 2)
+            print("Previous RoC", self.window.roc_temp)
+            print("Filtered Temp", output[-1])
+            self.window.roc_temp = output[-1]
 
     ##################################333
 

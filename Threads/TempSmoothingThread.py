@@ -32,7 +32,7 @@ class TempSmoothingThread(QThread):
                 if (self.window.temp_window_size < len(self.window.temp_data) and self.window.tempSmooth == "True"):
                     self.ewma_temp()
             elif (self.window.smoothAlgorithm == "savgol"):
-                # print ("Savitzky Golay Filter")
+
                 if (self.window.temp_window_size < len(self.window.temp_data) and self.window.tempSmooth == "True"):
                     self.savgol_temp()
 
@@ -52,18 +52,50 @@ class TempSmoothingThread(QThread):
 
     ####################################
     def savgol_temp(self):
-        # Create a temporary data array with the new temperature data appended.
-        temp_d = copy.deepcopy(self.window.temp_data)
-        temp_d.append(self.window.line)
-        # Smooth the values.
-        yhat = savgol_filter(temp_d, self.window.temp_window_size, 3)  # window size 51, polynomial order 3
-        # pop the last value off and set that as the incomming temperature value.
-        self.window.line = round(float(yhat[-1]), 1)
-        self.window.temp_data = np.ndarray.tolist(yhat[:-1])
+
+        # Create a temporary data array with the new roc data appended.
+
+        roc_d = copy.deepcopy(self.window.temp_data)
+
+        sav_ar = roc_d[-self.window.temp_window_size:]
+        sav_ar = np.trim_zeros(sav_ar)
+        sav_ar.append(self.window.line)
+
+        if int(self.window.temp_window_size) > len(sav_ar):
+            pass
+        else:
+            # Smooth the values.
+            yhat = savgol_filter(sav_ar, self.window.temp_window_size, 3)  # window size 51, polynomial order 3
+
+            # pop the last value off and set that as the incomming temperature value.
+            print("Previous Temp", self.window.line)
+            print("Filtered RoC", yhat[-1])
+            self.window.line = round(float(yhat[-1]), 1)
+
+            for i in range (1,self.window.temp_window_size):
+                self.window.temp_data[-i] = yhat[-i-1]
+
 
     #####################################
     def mov_avg_temp(self):
-        pass
+        temp_d = copy.deepcopy(self.window.temp_data)
+        temp_d.append(self.window.line)
+        avg_ar = temp_d[-self.window.temp_window_size:]
+        #print("This is avg array: " , avg_ar)
+
+        if (self.window.kernel_size <= self.window.temp_window_size):
+            output=np.convolve(avg_ar, np.ones((int(self.window.kernel_size),)) / int(self.window.kernel_size), mode='valid')
+            output = round(output[-1], 1)
+
+            print("Previous Temp", self.window.line)
+
+            print("Filtered Temp", output)
+
+            self.window.line = output
+        else:
+            pass
+
+
 
     ##################################333
     def ewma_temp(self):

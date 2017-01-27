@@ -43,7 +43,9 @@ class SmoothingDialog(QtGui.QDialog):
         self.ewma_button = QtGui.QRadioButton('EWMA Filter')
         self.ewma_button.setToolTip("Exponential Weighted Moving Average")
         self.median_button = QtGui.QRadioButton('Median Filter')
-        self.savgol_button = QtGui.QRadioButton('Savitzky-Golay Filter')
+        self.median_button.setEnabled(False)
+        self.savgol_button = QtGui.QRadioButton('Savitzky-Golay Filter (Experimental)')
+        # self.savgol_button.setEnabled(False)
         self.window_button = QtGui.QRadioButton('Moving Average Filter')
 
 
@@ -204,6 +206,9 @@ class SmoothingDialog(QtGui.QDialog):
     def radio_select(self):
         if (self.window.smoothAlgorithm == "avg"):
             self.window_button.setChecked(True)
+            self.kernel_size_widget.setVisible(True)
+            self.median_title.setText("Moving Average Filter Preferences")
+
         elif (self.window.smoothAlgorithm == "ewma"):
             self.ewma_button.setChecked(True)
             self.exp_weight_widget.setVisible(True)
@@ -211,6 +216,7 @@ class SmoothingDialog(QtGui.QDialog):
             self.savgol_button.setChecked(True)
         else:
             self.median_button.setChecked(True)
+
             self.kernel_size_widget.setVisible(True)
 
     def radio_change(self):
@@ -219,7 +225,9 @@ class SmoothingDialog(QtGui.QDialog):
             self.window.smoothAlgorithm = 'avg'
 
             self.exp_weight_widget.setVisible(False)
-            self.kernel_size_widget.setVisible(False)
+            self.kernel_size_widget.setVisible(True)
+            self.median_title.setText("Moving Average Filter Preferences")
+
 
         elif (self.ewma_button.isChecked()):
             self.window.smoothAlgorithm = 'ewma'
@@ -238,6 +246,8 @@ class SmoothingDialog(QtGui.QDialog):
 
             self.exp_weight_widget.setVisible(False)
             self.kernel_size_widget.setVisible(True)
+            self.median_title.setText("Median Filter Preferences")
+
 
 
     def showEvent(self, event):
