@@ -8,7 +8,8 @@ import os
 from os.path import expanduser
 import datetime
 import time
-import gc
+import atexit
+
 
 sys.path.insert(0, '/home/misha/Google Drive/PycharmProjects/Rosetta-November2016/Dialogs')
 sys.path.insert(0, '/home/misha/Google Drive/PycharmProjects/Rosetta-November2016/Threads')
@@ -19,10 +20,8 @@ sys.path.insert(0, '/home/misha/Google Drive/PycharmProjects/Rosetta-November201
 from RocDialog import RocDialog
 from Dock_Widget import Dock_Widget
 from TimeAxisItem import TimeAxisItem
-from MultiWindows import MultiWindows
 from SerialThread import SerialThread
 from BorderLessDiaglogs import BorderLessDiaglogs
-from ChildWindow import ChildWindow
 from GrapherThread import GrapherThread
 from RecoveryThread import RecoveryThread
 from GraphPrefDialog import GraphPrefDialog
@@ -33,7 +32,6 @@ from TempSmoothingThread import TempSmoothingThread
 
 
 ###########################################
-windows = MultiWindows()
 
 import_temp_time = []
 import_roc_time = []
@@ -60,9 +58,15 @@ current_bean = ""
 
 
 class Window(QtGui.QMainWindow):
+    EXIT_CODE_REBOOT = -123  # REBOOT CODE.
     # initilize main window
-    def __init__(self):
-        QtGui.QMainWindow.__init__(self, None)  # , QtCore.Qt.WindowStaysOnTopHint
+    def __init__(self,parent=None):
+        # QtGui.QMainWindow.__init__(self, None)  # , QtCore.Qt.WindowStaysOnTopHint
+        super(Window, self).__init__(parent)
+
+        #ENSURE RESET OF SERIAL PORT FOLLOWS
+        atexit.register(self.quit)
+
 
         # super(Window, self).__init__()
         self.first = False
@@ -468,10 +472,6 @@ class Window(QtGui.QMainWindow):
         exitAction.setStatusTip('Exit application')
         exitAction.triggered.connect(self.quit)
 
-        newWindowAction = QtGui.QAction(QtGui.QIcon.fromTheme('new'), 'New Window', self)
-        newWindowAction.setShortcut('Ctrl+N')
-        newWindowAction.setStatusTip('New Window')
-        newWindowAction.triggered.connect(self.showChildWindow)
 
         self.menubar = self.menuBar()
         fileMenu = self.menubar.addMenu('&File')
@@ -510,7 +510,6 @@ class Window(QtGui.QMainWindow):
         toolMenu.addAction(smooth_pref_action)
 
         fileMenu.addAction(exitAction)
-        fileMenu.addAction(newWindowAction)
 
         self.start_stop_action.setShortcut('F2')
         self.start_stop_action.triggered.connect(self.ss)
@@ -546,41 +545,8 @@ class Window(QtGui.QMainWindow):
         self.air_action.setEnabled(False)
 
     # Fuction for making a new window
-    def showChildWindow(self):
-        if (self.arduino.state == False):
-            gc.collect()
-            QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
-            start = time.time()
-            splash = QtGui.QSplashScreen(QPixmap((os.path.expanduser("/~/Roastery/loading.png"))),
-                                         QtCore.Qt.WindowStaysOnTopHint)
-            splash.show()
-            progressBar = QtGui.QProgressBar(splash)
-            palette = QtGui.QPalette()
-            palette.setColor(QtGui.QPalette.Highlight, QtGui.QColor(QtCore.Qt.red))
-
-            progressBar.setPalette(palette)
-
-            splash.setMask(QPixmap((os.path.expanduser("~/Roastery/loading.png"))).mask())
-
-            splash.show()
-            for i in range(0, 100):
-                progressBar.setValue(i)
-                t = time.time()
-                while time.time() < t + 0.1:
-                    app.processEvents()
-
-            self.child_win = ChildWindow()
-            self.child_win.show()
-            self.child_win.connect()
-
-            splash.finish(self.child_win)
-            QtGui.QApplication.restoreOverrideCursor()
 
 
-        else:
-            print("Another Thread running")
-
-    # timed thread that calls update function to collect serial data, smooth, etc
     def update(self):
 
         self.elapsed = round(time.time() - self.s_time, 1)
@@ -675,9 +641,10 @@ class Window(QtGui.QMainWindow):
     def quit(self):
         self.deleteLater()
         self.close()
+        self.arduino.disconnect()
+        QtGui.qApp.exit()
         sys.exit()
 
-    # def closeEvent(self, event):
 
     # initialize the preference files
     def initPref(self):
@@ -1302,4 +1269,10 @@ if __name__ == '__main__':
     os.system("defaults write com.SVT.Roastery NSAppSleepDisabled -bool YES")
     window.show()
 
-    sys.exit(app.exec_())
+    app.exec_()
+
+
+
+
+
+

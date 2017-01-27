@@ -1,6 +1,11 @@
 import sys
 from pyqtgraph.Qt import QtGui, QtCore
+from PyQt4.QtGui import QPixmap
+import subprocess
+
+
 import csv
+import os
 # from Rosetta import Window
 
 
@@ -65,6 +70,11 @@ class End_Dialog(QtGui.QMainWindow):
         self.setWindowTitle("Roast End")
         # self.showMaximized()
 
+        self._tempFile = self.window.directory + '/Temp.csv'
+        self.export_tempFile = open(self._tempFile, 'a')
+
+        self.temp_writer = csv.writer(self.export_tempFile, dialect='excel')
+
 
     def exit(self):
         self.hide()
@@ -72,16 +82,13 @@ class End_Dialog(QtGui.QMainWindow):
     def confirm(self):
         print("Confirmed")
 
-        _tempFile = self.window.directory + '/Temp.csv'
-        export_tempFile = open(_tempFile, 'a')
 
-        temp_writer = csv.writer(export_tempFile, dialect='excel')
 
-        temp_writer.writerow(['Green Weight', str(self.green_weight_fld.text())])
-        temp_writer.writerow(['Roasted Weight', str(self.roasted_weight_fld.text())])
-        temp_writer.writerow(['Percentage Loss', str(self.percentage_loss.text())])
-        temp_writer.writerow(['Comments: ', str(self.le2.text())])
-        export_tempFile.close()
+        self.temp_writer.writerow(['Green Weight', str(self.green_weight_fld.text())])
+        self.temp_writer.writerow(['Roasted Weight', str(self.roasted_weight_fld.text())])
+        self.temp_writer.writerow(['Percentage Loss', str(self.percentage_loss.text())])
+        self.temp_writer.writerow(['Comments: ', str(self.le2.text())])
+        self.export_tempFile.close()
         if(self.new):
             self.hide()
         else:
@@ -99,5 +106,14 @@ class End_Dialog(QtGui.QMainWindow):
             pass
 
     def newWindow(self):
-        self.window.showChildWindow()
         self.new = True
+        self.parent().parent().arduino.disconnect()
+        self.parent().parent().arduino.arduino.close()
+        del(self.parent().parent().arduino)
+        QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
+        QtGui.QApplication.processEvents()
+        self.parent().parent().__init__()
+        self.parent().parent().hide()
+        self.parent().parent().connect()
+        QtGui.QApplication.restoreOverrideCursor()
+        self.parent().parent().show()

@@ -87,11 +87,6 @@ class SerialThread(QtCore.QThread):
 
     def disconnect(self):
         # self.lock.unlock()
-        print("Aquiring Write Lock")
-        # self.lock.lockForWrite()
-        print("Locked")
-        self.arduino.write("E")
-        # self.lock.unlock()
         self.arduino.close()
         self.state = False
 

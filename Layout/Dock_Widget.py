@@ -1,5 +1,6 @@
 from pyqtgraph.Qt import QtGui, QtCore
 from End_Dialog import End_Dialog
+
 import sys
 import csv
 
@@ -79,7 +80,7 @@ class Dock_Widget(QtGui.QWidget):
                 pass
 
 
-        end_dialog = End_Dialog(self.window,self)
+        end_dialog = End_Dialog(self.parent(),self)
         # end_dialog.exec_()
         end_dialog.show()
         # end_dialog.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
