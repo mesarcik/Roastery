@@ -9,7 +9,7 @@ from setuptools import setup
 
 APP = ['Rosetta.py']
 DATA_FILES = []
-OPTIONS = {'iconfile':'icon.icns',
+OPTIONS = {'iconfile':'Icons/icon.icns',
 			'includes': ['sip','PyQt4']}
 
 setup(
