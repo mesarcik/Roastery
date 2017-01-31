@@ -1,5 +1,5 @@
 from pyqtgraph.Qt import QtGui, QtCore
-from End_Dialog import End_Dialog
+from Dialogs import End_Dialog
 
 import sys
 import csv

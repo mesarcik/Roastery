@@ -10,25 +10,10 @@ import datetime
 import time
 import atexit
 
-
-sys.path.insert(0, '/home/misha/Google Drive/PycharmProjects/Rosetta-November2016/Dialogs')
-sys.path.insert(0, '/home/misha/Google Drive/PycharmProjects/Rosetta-November2016/Threads')
-sys.path.insert(0, '/home/misha/Google Drive/PycharmProjects/Rosetta-November2016/GraphingTools')
-sys.path.insert(0, '/home/misha/Google Drive/PycharmProjects/Rosetta-November2016/Layout')
-sys.path.insert(0, '/home/misha/Google Drive/PycharmProjects/Rosetta-November2016/MultiWindow')
-
-from RocDialog import RocDialog
-from Dock_Widget import Dock_Widget
-from TimeAxisItem import TimeAxisItem
-from SerialThread import SerialThread
-from BorderLessDiaglogs import BorderLessDiaglogs
-from GrapherThread import GrapherThread
-from RecoveryThread import RecoveryThread
-from GraphPrefDialog import GraphPrefDialog
-from SmoothingDialog import SmoothingDialog
-from RoCThread import RoCThread
-from RoCSmoothingThread import RoCSmoothingThread
-from TempSmoothingThread import TempSmoothingThread
+from Dialogs import BorderLessDiaglogs,GraphPrefDialog,RocDialog,SmoothingDialog
+from GraphingTools import TimeAxisItem
+from Layout import Dock_Widget
+from Threads import GrapherThread,RecoveryThread,RoCSmoothingThread,RoCThread,SerialThread,TempSmoothingThread
 
 
 ###########################################
