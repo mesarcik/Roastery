@@ -6,14 +6,18 @@ Usage:
 """
 
 from setuptools import setup
+import sys
+
+sys.setrecursiondepth(8000) # To Fix py2app's recursion bug.
 
 APP = ['Rosetta.py']
 DATA_FILES = []
-OPTIONS = {'iconfile':'Icons/icon.icns',
+OPTIONS = {'iconfile':'icon.icns',
 			'includes': ['sip','PyQt4']}
 
 setup(
     app=APP,
+    name='Roastery',
     data_files=DATA_FILES,
     options={'py2app': OPTIONS},
     setup_requires=['py2app'],

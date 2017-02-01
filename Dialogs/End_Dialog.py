@@ -2,8 +2,7 @@ import sys
 from pyqtgraph.Qt import QtGui, QtCore
 from PyQt4.QtGui import QPixmap
 import subprocess
-
-
+import datetime
 import csv
 import os
 # from Rosetta import Window
@@ -109,6 +108,8 @@ class End_Dialog(QtGui.QMainWindow):
         self.new = True
         self.parent().parent().arduino.disconnect()
         self.parent().parent().arduino.arduino.close()
+        now = datetime.datetime.now()
+        self.parent().parent().directory = '/' + now.strftime("%Y-%m-%d %H:%M") 
         del(self.parent().parent().arduino)
         QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
         QtGui.QApplication.processEvents()

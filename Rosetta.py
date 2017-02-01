@@ -1,4 +1,4 @@
-from pyqtgraph.Qt import QtGui, QtCore
+from PyQt4 import QtGui, QtCore
 from PyQt4.QtGui import QPixmap
 import numpy as np
 import sys
