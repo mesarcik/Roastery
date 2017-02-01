@@ -8,7 +8,7 @@ Usage:
 from setuptools import setup
 import sys
 
-sys.setrecursiondepth(8000) # To Fix py2app's recursion bug.
+sys.setrecursionlimit(8000) # To Fix py2app's recursion bug.
 
 APP = ['Rosetta.py']
 DATA_FILES = []
