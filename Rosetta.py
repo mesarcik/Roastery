@@ -1099,13 +1099,26 @@ class Window(QtGui.QMainWindow):
     def exportImages(self):
         print("Exporting Images")
         try:
-            temp_img = QtGui.QPixmap.grabWidget(self.temp)
-            temp_img.save(self.directory + '/Temperature vs Time.jpg', 'jpg', -1)
-            roc_img = QtGui.QPixmap.grabWidget(self.temp)
-            roc_img.save(self.directory + '/Roc vs Time.jpg', 'jpg', -1)
-            screenshot = QtGui.QPixmap.grabWidget(self)
-            screenshot.save(self.directory + '/screenshot.jpg', 'jpg', -1)
 
+            if sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
+                temp_img = QtGui.QPixmap.grabWidget(self.temp)
+                temp_img.save(self.directory + '/Temperature vs Time.jpg', 'jpg', -1)
+                roc_img = QtGui.QPixmap.grabWidget(self.roc)
+                roc_img.save(self.directory + '/Roc vs Time.jpg', 'jpg', -1)
+                screenshot = QtGui.QPixmap.grabWidget(self)
+                screenshot.save(self.directory + '/screenshot.jpg', 'jpg', -1)
+
+
+            elif sys.platform.startswith('darwin'):
+                temp_exporter = pg.exporters.ImageExporter(self.temp.getPlotItem())
+                temp_exporter.export(self.directory + '/Temperature vs Time.png')
+                roc_exporter = pg.exporters.ImageExporter(self.roc.getPlotItem())
+                roc_exporter.export(self.directory + '/Roc vs Time.jpg.png')
+
+
+
+
+           
         except:
             print "Unexpected error:", sys.exc_info()[0]
             pass
