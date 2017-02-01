@@ -1,5 +1,4 @@
 from PyQt4 import QtGui, QtCore
-from PyQt4.QtGui import QPixmap
 import numpy as np
 import sys
 import pyqtgraph as pg
@@ -1100,9 +1099,9 @@ class Window(QtGui.QMainWindow):
     def exportImages(self):
         print("Exporting Images")
         try:
-            QPixmap.grabWidget(self.temp).save(self.directory + '/Temperature vs Time.jpg', 'jpg', -1)
-            QPixmap.grabWidget(self.temp).save(self.directory + '/Roc vs Time.jpg', 'jpg', -1)
-            QPixmap.grabWidget(self).save(self.directory + '/screenshot.jpg', 'jpg', -1)
+            QtGui.QPixmap.grabWidget(self.temp).save(self.directory + '/Temperature vs Time.jpg', 'jpg', -1)
+            QtGui.QPixmap.grabWidget(self.temp).save(self.directory + '/Roc vs Time.jpg', 'jpg', -1)
+            QtGui.QPixmap.grabWidget(self).save(self.directory + '/screenshot.jpg', 'jpg', -1)
 
         except:
             print "Unexpected error:", sys.exc_info()[0]
@@ -1237,7 +1236,7 @@ class Window(QtGui.QMainWindow):
 
 if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
-    splash = QtGui.QSplashScreen(QPixmap((os.path.expanduser("~/Roastery/loading.png"))))
+    splash = QtGui.QSplashScreen(QtGui.QPixmap((os.path.expanduser("~/Roastery/loading.png"))))
     QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
     splash.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint)
 
