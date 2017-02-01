@@ -1099,9 +1099,12 @@ class Window(QtGui.QMainWindow):
     def exportImages(self):
         print("Exporting Images")
         try:
-            QtGui.QPixmap.grabWidget(self.temp).save(self.directory + '/Temperature vs Time.jpg', 'jpg', -1)
-            QtGui.QPixmap.grabWidget(self.temp).save(self.directory + '/Roc vs Time.jpg', 'jpg', -1)
-            QtGui.QPixmap.grabWidget(self).save(self.directory + '/screenshot.jpg', 'jpg', -1)
+            temp_img = QtGui.QPixmap.grabWidget(self.temp)
+            temp_img.save(self.directory + '/Temperature vs Time.jpg', 'jpg', -1)
+            roc_img = QtGui.QPixmap.grabWidget(self.temp)
+            roc_img.save(self.directory + '/Roc vs Time.jpg', 'jpg', -1)
+            screenshot = QtGui.QPixmap.grabWidget(self)
+            screenshot.save(self.directory + '/screenshot.jpg', 'jpg', -1)
 
         except:
             print "Unexpected error:", sys.exc_info()[0]
