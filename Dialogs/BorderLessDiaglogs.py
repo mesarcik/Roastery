@@ -55,13 +55,13 @@ class BorderLessDiaglogs(QtGui.QDialog):
 
     def showEvent(self, event):
         if (self.gas_or_air == "gas"):
-            point = self.window.gas_slider.rect().topLeft()
-            global_point = self.window.gas_slider.mapToGlobal(point)
-            self.move(global_point - QtCore.QPoint(self.width()-50,60))
+            point = self.window.gas_slider_label.rect().topLeft()
+            global_point = self.window.gas_slider_label.mapToGlobal(point)
+            self.move(global_point - QtCore.QPoint(self.width()-120,self.height() +30))
         else:
-            point = self.window.air_slider.rect().topLeft()
-            global_point = self.window.air_slider.mapToGlobal(point)
-            self.move(global_point - QtCore.QPoint(self.width() -50, 60))
+            point = self.window.air_slider_label.rect().topLeft()
+            global_point = self.window.air_slider_label.mapToGlobal(point)
+            self.move(global_point - QtCore.QPoint(self.width()-100, self.height()+30))
         super(BorderLessDiaglogs, self).showEvent(event)
 
     def eventFilter(self, object, event):
