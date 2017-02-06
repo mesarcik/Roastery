@@ -110,12 +110,18 @@ class SmoothingDialog(QtGui.QDialog):
             self.window.tempSmooth ='True'
         else:
             self.window.tempSmooth ='False'
+        self.window.savePref()
+        self.window.initPref()
 
     def roc_checkbox_change(self, state):
         if state == QtCore.Qt.Checked:
             self.window.rocSmooth = 'True'
         else:
             self.window.rocSmooth = 'False'
+        self.window.savePref()
+        self.window.initPref()
+
+
 
 
     def initUI(self):
@@ -203,6 +209,10 @@ class SmoothingDialog(QtGui.QDialog):
         self.kernel_size_val.setText(str(self.kernel_size_slider.value()) + ' Samples')
         self.window.kernel_size = self.kernel_size_slider.value()
 
+        self.window.savePref()
+        self.window.initPref()
+
+
     def radio_select(self):
         if (self.window.smoothAlgorithm == "avg"):
             self.window_button.setChecked(True)
@@ -218,6 +228,9 @@ class SmoothingDialog(QtGui.QDialog):
             self.median_button.setChecked(True)
 
             self.kernel_size_widget.setVisible(True)
+        self.window.savePref()
+        self.window.initPref()
+
 
     def radio_change(self):
 
@@ -247,6 +260,10 @@ class SmoothingDialog(QtGui.QDialog):
             self.exp_weight_widget.setVisible(False)
             self.kernel_size_widget.setVisible(True)
             self.median_title.setText("Median Filter Preferences")
+
+        self.window.savePref()
+        self.window.initPref()
+
 
 
 

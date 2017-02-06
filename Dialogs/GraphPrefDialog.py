@@ -67,6 +67,9 @@ class GraphPrefDialog(QtGui.QDialog):
     def range_change(self):
         self.window.ystart = float(self.yrange_start_txt.text())
         self.window.yend = float(self.yrange_end_txt.text())
+        self.window.savePref()
+        self.window.initPref()
+
     def checkbox_change_leg(self, state1):
         if state1 == QtCore.Qt.Checked:
             self.window.showLegend = 'True'
@@ -74,12 +77,18 @@ class GraphPrefDialog(QtGui.QDialog):
         else:
             self.window.showLegend = 'False'
 
+        self.window.savePref()
+        self.window.initPref()
+
+
     def checkbox_change_int(self, state2):
         if state2 == QtCore.Qt.Checked:
             self.window.int = 'True'
 
         else:
             self.window.int = 'False'
+        self.window.savePref()
+        self.window.initPref()
 
     def initUI(self):
         self.dialog_layout.addRow(self.temp_title)
@@ -112,6 +121,8 @@ class GraphPrefDialog(QtGui.QDialog):
     def slider_change(self):
         self.scale_slider_val.setText(str(self.scale_slider.value()))
         self.window.scale = self.scale_slider.value()
+        self.window.savePref()
+        self.window.initPref()
 
 
 

@@ -119,6 +119,8 @@ class RocDialog(QtGui.QDialog):
         self.window.sampling_interval = self.sampling_slider.value()
         self.refresh_val.setText(str(self.refresh_slider.value()) + ' samples')
         self.window.refresh_rate = self.refresh_slider.value()
+        self.window.savePref()
+        self.window.initPref()
 
     def radio_change(self):
 
@@ -127,6 +129,8 @@ class RocDialog(QtGui.QDialog):
 
         elif (self.point_button.isChecked()):
             self.window.rocMethod = 'point'
+        self.window.savePref()
+        self.window.initPref()
 
 
     def showEvent(self, event):
