@@ -1215,10 +1215,9 @@ class Window(QtGui.QMainWindow):
     def gas(self, event):
         self.gas_slider.setFocus(True)
 
-        air_gas_dialog = BorderLessDiaglogs(self, "gas")
+        air_gas_dialog = BorderLessDiaglogs(self, "gas",self)
         air_gas_dialog.exec_()
         air_gas_dialog.show()
-        air_gas_dialog.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
         b_font = QtGui.QFont()
         b_font.setBold(True)
@@ -1230,10 +1229,9 @@ class Window(QtGui.QMainWindow):
     def air(self):
         self.air_slider.setFocus(True)
 
-        air_gas_dialog = BorderLessDiaglogs(self, "air")
+        air_gas_dialog = BorderLessDiaglogs(self, "air",self)
         air_gas_dialog.exec_()
         air_gas_dialog.show()
-        air_gas_dialog.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
         b_font = QtGui.QFont()
         b_font.setBold(True)

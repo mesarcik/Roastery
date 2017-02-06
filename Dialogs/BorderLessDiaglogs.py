@@ -1,8 +1,8 @@
 from pyqtgraph.Qt import QtGui, QtCore
 
 class BorderLessDiaglogs(QtGui.QDialog):
-    def __init__(self,window,gas_or_air):
-        super(BorderLessDiaglogs, self).__init__(parent=None)
+    def __init__(self,window,gas_or_air,parent):
+        super(BorderLessDiaglogs, self).__init__(parent)
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint)
 
 
@@ -30,13 +30,14 @@ class BorderLessDiaglogs(QtGui.QDialog):
                      self.Exit)
         self.connect(QtGui.QShortcut(QtGui.QKeySequence(QtCore.Qt.Key_Return), self), QtCore.SIGNAL('activated()'),
                      self.Return)
+        self.installEventFilter(self)
+
 
         self.setFocus()
         self.show()
 
     def Exit(self):
         print"exit triggerd"
-        self.window.setFocus(True)
         self.close()
 
     def Return(self):
@@ -45,7 +46,6 @@ class BorderLessDiaglogs(QtGui.QDialog):
             self.window.gas_slider.setValue(int(self.text.text()))
         else:
             self.window.air_slider.setValue(int(self.text.text()))
-        self.window.setFocus(True)
         self.close()
 
     # Gives focus to textedit when key is pressed
@@ -57,11 +57,29 @@ class BorderLessDiaglogs(QtGui.QDialog):
         if (self.gas_or_air == "gas"):
             point = self.window.gas_slider.rect().topLeft()
             global_point = self.window.gas_slider.mapToGlobal(point)
-            self.move(global_point - QtCore.QPoint(self.width()-50,5))
+            self.move(global_point - QtCore.QPoint(self.width()-50,60))
         else:
             point = self.window.air_slider.rect().topLeft()
             global_point = self.window.air_slider.mapToGlobal(point)
-            self.move(global_point - QtCore.QPoint(self.width() -50, 5))
+            self.move(global_point - QtCore.QPoint(self.width() -50, 60))
         super(BorderLessDiaglogs, self).showEvent(event)
 
+    def eventFilter(self, object, event):
+        try:
+            if event.type() == QtCore.QEvent.WindowActivate or self.text.hasFocus():
+                # print "widget window has gained focus"
+                pass
+            elif event.type() == QtCore.QEvent.WindowDeactivate or self.text.hasFocus():
+                # print "widget window has lost focus"
+                pass
+            elif event.type() == QtCore.QEvent.FocusIn or self.text.hasFocus():
+                # print "widget has gained keyboard focus"
+                pass
+            elif event.type() == QtCore.QEvent.FocusOut or self.text.hasFocus():
+                # print "widget has lost keyboard focus"
+                pass
+                self.close()
+        except:
+            pass
+        return super(BorderLessDiaglogs, self).eventFilter(object, event)
 
