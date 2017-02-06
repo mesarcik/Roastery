@@ -1,8 +1,8 @@
 from pyqtgraph.Qt import QtGui, QtCore
 
 class BorderLessDiaglogs(QtGui.QDialog):
-    def __init__(self,window,gas_or_air,parent=None,):
-        super(BorderLessDiaglogs, self).__init__(parent)
+    def __init__(self,window,gas_or_air):
+        super(BorderLessDiaglogs, self).__init__(parent=None)
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint)
 
 
@@ -36,6 +36,7 @@ class BorderLessDiaglogs(QtGui.QDialog):
 
     def Exit(self):
         print"exit triggerd"
+        self.window.setFocus(True)
         self.close()
 
     def Return(self):
@@ -44,6 +45,7 @@ class BorderLessDiaglogs(QtGui.QDialog):
             self.window.gas_slider.setValue(int(self.text.text()))
         else:
             self.window.air_slider.setValue(int(self.text.text()))
+        self.window.setFocus(True)
         self.close()
 
     # Gives focus to textedit when key is pressed
