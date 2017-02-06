@@ -353,7 +353,7 @@ class Window(QtGui.QMainWindow):
 
         self.ipen = pg.mkPen(color='c', style=QtCore.Qt.DashLine, width=0.25)
         self.igas_pen = pg.mkPen(color='m', style=QtCore.Qt.DashLine, width=0.25)
-        self.iair_pen = pg.mkPen(color='m', style=QtCore.Qt.DashLine, width=0.25)
+        self.iair_pen = pg.mkPen(color='b', style=QtCore.Qt.DashLine, width=0.25)
         self.ifc_pen = pg.mkPen(color='r', style=QtCore.Qt.DashLine, width=0.25)
         self.isc_pen = pg.mkPen(color='y', style=QtCore.Qt.DashLine, width=0.25)
         self.itp_pen = pg.mkPen(color='w', style=QtCore.Qt.DashLine, width=0.25)
