@@ -45,8 +45,10 @@ class Window(QtGui.QMainWindow):
     EXIT_CODE_REBOOT = -123  # REBOOT CODE.
     # initilize main window
     def __init__(self,parent=None):
-        # QtGui.QMainWindow.__init__(self, None)  # , QtCore.Qt.WindowStaysOnTopHint
+        #QtGui.QMainWindow.__init__(self, None, QtCore.Qt.WindowStaysOnTopHint)
         super(Window, self).__init__(parent)
+        self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+
 
         #ENSURE RESET OF SERIAL PORT FOLLOWS
         atexit.register(self.quit)
@@ -1253,10 +1255,12 @@ class Window(QtGui.QMainWindow):
 
 if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
-    splash = QtGui.QSplashScreen(QtGui.QPixmap((os.path.expanduser("~/Roastery/loading.png"))))
+    image = QtGui.QPixmap((os.path.expanduser("~/Roastery/loading.png")))
+    splash = QtGui.QSplashScreen(image)
     QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
     splash.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint)
-
+    splash.showMessage ( "Connecting to Thermocouple System",QtCore.Qt.AlignBottom, QtCore.Qt.black)
+    splash.resize(image.width(),image.height() + 30)
     splash.show()
 
     window = Window()
@@ -1269,6 +1273,7 @@ if __name__ == '__main__':
     app.setApplicationName('Roastery')
     os.system("defaults write com.SVT.Roastery NSAppSleepDisabled -bool YES")
     window.show()
+    window.raise_()
 
     app.exec_()
 
