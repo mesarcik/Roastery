@@ -118,6 +118,8 @@ class Window(QtGui.QMainWindow):
         self.int = ''
         self.scale = 2
         self.ratio = 8.325
+        self.ystart =0
+        self.yend = 1
 
         self.beans = []
         self.roc_temp = 0
@@ -425,7 +427,7 @@ class Window(QtGui.QMainWindow):
         self.roc_drop_out = self.roc.plot(pen=self.do_pen, name='Drop Out')
         self.import_roc_drop_out_curve = self.roc.plot(pen=self.ido_pen)
 
-        self.roc.setYRange(0, 0.33, padding=0)
+        self.roc.setYRange(self.ystart, self.yend, padding=0)
 
         self.roc.showGrid(x=True, y=True, alpha=0.3)
 
@@ -542,7 +544,7 @@ class Window(QtGui.QMainWindow):
         self.line = round(float(self.line), 2)
 
         if self.start_stop == False:
-            self.temp_label.setText('        TEMP:' + str((self.line)))
+            self.temp_label.setText('        TEMP:' + str(round(float(self.line),1)))
         else:
 
             if ((self.second_count == 59) or ((self.second_count_minus_1 > 50) and (self.second_count < 10))):
@@ -619,7 +621,7 @@ class Window(QtGui.QMainWindow):
 
     def onGraphFinished(self):
         # print("Graph done.")
-        self.temp_label.setText('        TEMP:' + str((self.line)))
+        self.temp_label.setText('        TEMP:' + str(round(float(self.line),1)))
 
     # terminate application on shortcut keys
     def quit(self):
@@ -695,10 +697,17 @@ class Window(QtGui.QMainWindow):
                 val = line.split('=')
                 self.int = str(val[1]).strip('\n')
                 print("Interactive graphs: ", self.int)
-            if (line.__contains__('scale')):
+            if (line.__contains__('xscale')):
                 val = line.split('=')
                 self.scale = float(str(val[1]).strip('\n'))
                 print("Scale: ", self.scale)
+            if (line.__contains__('yscale')):
+                val = line.split('=')
+                vals = val[1].split(':')
+                self.ystart = float(str(vals[0]).strip('\n'))
+                self.yend = float(str(vals[1]).strip('\n'))
+                print("YSCALE START: " , self.ystart)
+                print("YCALE End: " , self.yend)
             line = pre_file.readline()
 
     # save initialzed preferences to disk
@@ -719,7 +728,8 @@ class Window(QtGui.QMainWindow):
             pref_file.write('kernel_size=' + str(self.kernel_size) + "\n")
             pref_file.write('show_legend=' + str(self.showLegend) + "\n")
             pref_file.write('int=' + str(self.int) + "\n")
-            pref_file.write('scale=' + str(self.scale))
+            pref_file.write('xscale=' + str(self.scale) + "\n")
+            pref_file.write('yscale=' + str(self.ystart) + ":" + str(self.yend))
 
             pref_file.close()
 
@@ -738,7 +748,8 @@ class Window(QtGui.QMainWindow):
             pref_file.write('kernel_size=' + str(self.kernel_size) + "\n")
             pref_file.write('show_legend=' + str(self.showLegend) + "\n")
             pref_file.write('int=' + str(self.int) + "\n")
-            pref_file.write('scale=' + str(self.scale))
+            pref_file.write('scale=' + str(self.scale) + "\n")
+            pref_file.write('yscale=' + str(self.ystart) + ":" + str(self.yend))
 
             pref_file.close()
 
