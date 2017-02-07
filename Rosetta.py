@@ -141,7 +141,7 @@ class Window(QtGui.QMainWindow):
         self.gas_action = QtGui.QAction(QtGui.QIcon.fromTheme(''), 'Gas Level (g)', self)
         self.air_action = QtGui.QAction(QtGui.QIcon.fromTheme(''), 'Air Level (a)', self)
 
-        self.directory = '/' + now.strftime("%Y-%m-%d %H:%M")
+        self.directory = '/' + now.strftime("%Y-%m-%d %H:%M:%S")
 
         if sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
             home = expanduser("~")
