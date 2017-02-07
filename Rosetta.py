@@ -47,7 +47,7 @@ class Window(QtGui.QMainWindow):
     def __init__(self,parent=None):
         #QtGui.QMainWindow.__init__(self, None, QtCore.Qt.WindowStaysOnTopHint)
         super(Window, self).__init__(parent)
-        self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+        # self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
 
         #ENSURE RESET OF SERIAL PORT FOLLOWS
