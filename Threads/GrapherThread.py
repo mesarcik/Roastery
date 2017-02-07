@@ -41,7 +41,7 @@ class GrapherThread(QThread):
             self.finished.emit()
 
     def updateValues(self):
-        self.window.roc_label.setText('ROC ' + str(round(self.window.roc_temp, 1)))
+        self.window.roc_label.setText('ROC ' + str(round(self.window.roc_temp, 2)))
 
         self.window.roc_data.append(float(self.window.roc_temp))
         self.window.roc_time_data.append(self.window.t.elapsed())

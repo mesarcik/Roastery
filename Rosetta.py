@@ -279,6 +279,26 @@ class Window(QtGui.QMainWindow):
 
         print("EVERYTHING IS INITIALIZED")
 
+    # Done for when starting a new window from the endDialog
+    def resetData (self):
+
+
+
+        self.import_temp_curve.clear()
+        self.import_temp_air_curve.clear()
+        self.import_temp_first_crack.clear()
+        self.import_temp_second_crack_curve.clear()
+        self.import_temp_tp_curve.setData(x=np.array(import_temp_time), y=(np.array(import_temp_tp)))
+        self.import_temp_drop_out_curve.clear()
+
+        self.import_roc_curve.clear()
+        self.import_roc_gas_curve.clear()
+        self.import_roc_first_crack.clear()
+        self.import_roc_second_crack.clear()
+        self.import_roc_tp_curve.clear()
+        self.import_roc_drop_out_curve.clear()
+
+
     # initlize tables (import/export)
     def setup_tables(self):
         ############### TABLE ELEMENTS ######################
@@ -347,7 +367,7 @@ class Window(QtGui.QMainWindow):
 
         self.pen = pg.mkPen(color='c', width=1)
         self.gas_pen = pg.mkPen(color='m', width=1.5)
-        self.air_pen = pg.mkPen(color='b', width=1.5)
+        self.air_pen = pg.mkPen(color=(255,162,0), width=1.5)
         self.fc_pen = pg.mkPen(color='r', width=1.5)
         self.sc_pen = pg.mkPen(color='y', width=1.5)
         self.tp_pen = pg.mkPen(color='w', width=1.5)
@@ -355,7 +375,7 @@ class Window(QtGui.QMainWindow):
 
         self.ipen = pg.mkPen(color='c', style=QtCore.Qt.DashLine, width=0.25)
         self.igas_pen = pg.mkPen(color='m', style=QtCore.Qt.DashLine, width=0.25)
-        self.iair_pen = pg.mkPen(color='b', style=QtCore.Qt.DashLine, width=0.25)
+        self.iair_pen = pg.mkPen(color=(255,162,0), style=QtCore.Qt.DashLine, width=0.25)
         self.ifc_pen = pg.mkPen(color='r', style=QtCore.Qt.DashLine, width=0.25)
         self.isc_pen = pg.mkPen(color='y', style=QtCore.Qt.DashLine, width=0.25)
         self.itp_pen = pg.mkPen(color='w', style=QtCore.Qt.DashLine, width=0.25)
@@ -836,19 +856,43 @@ class Window(QtGui.QMainWindow):
 
     # reads in .csv for import
     def importAction(self):
+
         x = False
         rcount = 0
         ccount = 0
+
         fname = QtGui.QFileDialog.getExistingDirectory(self, 'Open file', '/home')
         tempFile = fname + '/Temp.csv'
         rocFile = fname + '/RoC.csv'
-
+        if str(fname) is "":
+            print("Canelled")
+            return
         self.setFocus(True)
         self.show()
 
         try:
             temp_f = open(tempFile, 'r')
             roc_f = open(rocFile, 'r')
+
+
+            ##############################
+            import_temp_time = []
+            import_roc_time = []
+            import_temp = []
+            import_roc = []
+
+            import_air = []
+            import_temp_fcrack = []
+            import_temp_scrack = []
+            import_temp_tp = []
+            import_temp_do = []
+
+            import_gas = []
+            import_roc_fcrack = []
+            import_roc_scrack = []
+            import_roc_tp = []
+            import_roc_do = []
+            ###########################
 
             with temp_f:
                 try:

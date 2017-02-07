@@ -111,6 +111,7 @@ class End_Dialog(QtGui.QMainWindow):
         del(self.parent().parent().arduino)
         QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
         QtGui.QApplication.processEvents()
+        self.parent().parent().resetData()
         self.parent().parent().__init__()
         self.parent().parent().hide()
         self.parent().parent().connect()
