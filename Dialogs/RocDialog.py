@@ -20,6 +20,7 @@ class RocDialog(QtGui.QDialog):
         self.window_size_slider = QtGui.QSlider(QtCore.Qt.Horizontal)
         self.window_size_slider.setValue(window.delta)
         self.window_size_slider.setRange(1,100)
+        self.window_size_slider.add
         # self.window_size_slider.setTickInterval()
         self.window_size_label = QtGui.QLabel('Delta Size')
         self.window_size_val = QtGui.QLabel(str(window.delta) + ' samples')
