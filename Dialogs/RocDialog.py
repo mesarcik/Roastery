@@ -89,7 +89,7 @@ class RocDialog(QtGui.QDialog):
         self.refresh_slider.setTickPosition(QtGui.QSlider.TicksBothSides)
         self.refresh_slider.setTickInterval(50)
         self.refresh_slider.setSingleStep(1)
-        self.refresh_slider.setMinimum(1)
+        self.refresh_slider.setMinimum(0)
         self.refresh_slider.setMaximum(500)
         self.refresh_slider.valueChanged.connect(self.slider_change)
 

@@ -98,10 +98,11 @@ class GrapherThread(QThread):
 
     def serialFlush(self):
         # SERIAL PORT FLUSHER
-        if (self.window.refresh_counter == self.window.refresh_rate):
-            self.window.arduino.arduino.flushOutput()
-            self.window.arduino.arduino.flushInput()
-            self.window.refresh_counter = 0
+        if (self.window.refresh_rate != 0):
+            if (self.window.refresh_counter == self.window.refresh_rate):
+                self.window.arduino.arduino.flushOutput()
+                self.window.arduino.arduino.flushInput()
+                self.window.refresh_counter = 0
 
     def turnP(self):
         zeroless =  np.trim_zeros(self.window.roc_data)
