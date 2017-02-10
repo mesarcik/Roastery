@@ -1,7 +1,7 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
-#include "MegunoLink.h"
-#include "Filter.h"
+//#include "MegunoLink.h"
+//#include "Filter.h"
 
 // Data wire is plugged into port 2 on the Arduino
 #define ONE_WIRE_BUS 8
@@ -20,9 +20,11 @@ DeviceAddress insideThermometer, outsideThermometer, middleThermometer;
 
 float array [] = {200,199.75,199.5,199,198.5,198,197.75,197.5,197.25,197,196.75,196.5,196.25,196,195.75,195.5,195.25,195,194.75,194.5,194.25,194,194.5,194.75,195,195.25,195.5,195.75,196,196.5,196.75,197,197.25,197.5,197.75,198,198.25,198.5,198.75,199,199.25,199.5,199.75,200};
 float counter = 0;
+float adjustment_counter = 0.25;
+float counter_counter = 0;
 
 //// Create a new exponential filter with a weight of 5 and an initial value of 0. 
-ExponentialFilter<float> exp_smoothing_filter(5, array[0]);
+//ExponentialFilter<float> exp_smoothing_filter(5, array[0]);
 
 void setup(void)
 {
@@ -69,7 +71,7 @@ void printAddress(DeviceAddress deviceAddress)
 // function to print the temperature for a device
 void printTemperature(DeviceAddress deviceAddress, char name)
 {
-  delay(800);
+  delay(950);
   float tempC = sensors.getTempC(deviceAddress);
   Serial.println(tempC);
  }
@@ -95,13 +97,19 @@ void loop(void)
 //   }
     Serial.println(counter);
     if (counter < 200){
-//      counter = counter +float(random(-50, 100))/100.0;
-        counter = counter + 0.25; //+ +float(random(-10, 10))/100.0;
+//      counter = counter +float(ran`dom(-50, 100))/100.0;
+        if (counter_counter > 119){
+          adjustment_counter = adjustment_counter +0.25;
+          counter_counter =0;
+        }
+
+        counter = counter + adjustment_counter; //+ +float(random(-10, 10))/100.0;
+        counter_counter +=1;
     }else{
       counter = 30;
     }
     
-    delay(900);
+    delay(999);
   
 
     

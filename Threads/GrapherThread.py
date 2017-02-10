@@ -27,8 +27,8 @@ class GrapherThread(QThread):
         #   print("Graph Thread Spawned")
         try:
             self.devTime()
-            # self.window.refresh_counter += 1
-            # self.serialFlush()
+            self.window.refresh_counter += 1
+            self.serialFlush()
             self.turnP()
             self.correctNone()
             self.updateTemp()
