@@ -38,7 +38,7 @@ class RocDialog(QtGui.QDialog):
         self.refresh_slider.setValue(window.refresh_rate)
         self.refresh_val = QtGui.QLabel(str(window.refresh_rate) + ' samples')
         # self.refresh_val.setFont(font)
-        self.refresh_slider.setEnabled(False)
+        # self.refresh_slider.setEnabled(False)
 
         # #Roc properties
         # window.sampling_interval = 100
