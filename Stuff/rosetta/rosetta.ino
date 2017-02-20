@@ -109,7 +109,8 @@ void loop(void)
       counter = 30;
     }
     
-    delay(999);
+    delay(750);
+    delay(250);
   
 
     

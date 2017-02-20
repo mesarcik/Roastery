@@ -68,8 +68,8 @@ class TempSmoothingThread(QThread):
             yhat = savgol_filter(sav_ar, self.window.temp_window_size, 3)  # window size 51, polynomial order 3
 
             # pop the last value off and set that as the incomming temperature value.
-            print("Previous Temp", self.window.line)
-            print("Filtered RoC", yhat[-1])
+            # print("Previous Temp", self.window.line)
+            # print("Filtered RoC", yhat[-1])
             self.window.line = round(float(yhat[-1]), 1)
 
             for i in range (1,self.window.temp_window_size):
@@ -87,9 +87,9 @@ class TempSmoothingThread(QThread):
             output=np.convolve(avg_ar, np.ones((int(self.window.kernel_size),)) / int(self.window.kernel_size), mode='valid')
             output = round(output[-1], 1)
 
-            print("Previous Temp", self.window.line)
+            # print("Previous Temp", self.window.line)
 
-            print("Filtered Temp", output)
+            # print("Filtered Temp", output)
 
             self.window.line = output
         else:
@@ -112,9 +112,9 @@ class TempSmoothingThread(QThread):
             exp+=1
 
         self.weighted_temp = round(self.weighted_temp,1)
-        print("Previous Temp",self.window.line)
+        # print("Previous Temp",self.window.line)
 
-        print("Weighted Temp",self.weighted_temp)
+        # print("Weighted Temp",self.weighted_temp)
 
         self.window.line = self.weighted_temp
 
@@ -126,9 +126,9 @@ class TempSmoothingThread(QThread):
         output = medfilt(median_ar,int(self.window.kernel_size))
         output = round(output[-1],1)
 
-        print("Previous Temp", self.window.line)
+        # print("Previous Temp", self.window.line)
 
-        print("Filtered Temp", output)
+        # print("Filtered Temp", output)
 
         self.window.line = output
        ######################################

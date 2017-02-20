@@ -154,6 +154,11 @@ class GrapherThread(QThread):
             self.window.temp_tp.setData(x=self.x_time, y=np.array(self.window.temp_tp_data))
 
 
+
+            #CHECK IF THE GRAOHING TIME IS CORRECT.
+            # print("Time ", len(y_temp))
+            # print ("Real Time" , self.window.minute_count , ":",self.window.second_count)
+
             # self.window.count += 1
             # except:
             #     exc_type, exc_obj, exc_tb = sys.exc_info()

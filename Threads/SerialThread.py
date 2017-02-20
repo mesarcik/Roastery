@@ -11,7 +11,6 @@ class SerialThread(QtCore.QThread):
         self.arduino = serial.Serial()
         self.state = True
         self.arduino.baudrate = self.baud
-        self.arduino.timeout = 0.2
         self.timer = timer
         self.parent = parent
         self.port_bool = 0
@@ -71,7 +70,7 @@ class SerialThread(QtCore.QThread):
 
             # print ("connecting to %s",ports[i])
 
-            self.arduino = serial.Serial(port_a)
+            self.arduino = serial.Serial(port_a) #,self.baud,timeout=1)
             print ("connecting")
             timer = 0
             self.arduino.flushOutput()
@@ -83,6 +82,8 @@ class SerialThread(QtCore.QThread):
                 self.timer.timeout.connect(self.parent.update)
                 self.timer.start(1000)
                 print("Connected")
+                self.arduino.baudrate = 9600
+                self.arduino.timeout = 0
 
 
     def disconnect(self):

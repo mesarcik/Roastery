@@ -8,6 +8,7 @@ from os.path import expanduser
 import datetime
 import time
 import atexit
+import threading
 
 from Dialogs import BorderLessDiaglogs,GraphPrefDialog,RocDialog,SmoothingDialog
 from GraphingTools import TimeAxisItem
@@ -471,6 +472,7 @@ class Window(QtGui.QMainWindow):
             ret = msgBox.exec_()
             if ret == QtGui.QMessageBox.Ok:
                 self.quit()
+        # self.arduino.arduino.set
 
     # add all the graphical stuff to the interface -- initialize shortcuts
     def initUI(self):
@@ -554,19 +556,28 @@ class Window(QtGui.QMainWindow):
 
     # Fuction for making a new window
 
-
-    def update(self):
-
+    def updaterThread(self):
         self.elapsed = round(time.time() - self.s_time, 1)
         if (self.elapsed > 1):
             print("Elapsed Time: " + str(self.elapsed))
 
-        self.line = self.arduino.readline()
+        if (self.line == ""):
+            self.line  = self.temp_data[-1]
+
+        self.line = self.arduino.arduino.readline()
         self.first = True
+        # print("This is line: ", self.line)
+        # try:
         self.line = round(float(self.line), 2)
+        # except:
+        #     exc_type, exc_obj, exc_tb = sys.exc_info()
+        #     fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        #     print(exc_type, fname, exc_tb.tb_lineno)
+        #     pass
+        #
 
         if self.start_stop == False:
-            self.temp_label.setText('        TEMP:' + str(round(float(self.line),1)))
+            self.temp_label.setText('        TEMP:' + str(round(float(self.line), 1)))
         else:
 
             if ((self.second_count == 59) or ((self.second_count_minus_1 > 50) and (self.second_count < 10))):
@@ -592,8 +603,7 @@ class Window(QtGui.QMainWindow):
                 while (recoveryThread.isRunning()):
                     continue
 
-
-            if(self.tempSmooth =="True"):
+            if (self.tempSmooth == "True"):
                 tempSmoothThread = TempSmoothingThread(self)
                 tempSmoothThread.finished.connect(self.onTempSmoothFinished)
                 tempSmoothThread.start()
@@ -606,6 +616,12 @@ class Window(QtGui.QMainWindow):
 
         self.s_time = time.time()
         # time.sleep()
+
+
+    def update(self):
+        thread = threading.Thread(target=self.updaterThread, args=())
+        thread.start()
+
 
     def onTempSmoothFinished(self):
         rocThread = RoCThread(self)

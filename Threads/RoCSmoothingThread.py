@@ -88,8 +88,8 @@ class RoCSmoothingThread(QThread):
                                  mode='valid')
             # print("This is output: " , output)
             temp = round(output[-1], 2)
-            print("Previous RoC", self.window.roc_temp)
-            print("Filtered Temp", output[-1])
+            # print("Previous RoC", self.window.roc_temp)
+            # print("Filtered Temp", output[-1])
             self.window.roc_temp = output[-1]
 
     ##################################333
@@ -108,9 +108,9 @@ class RoCSmoothingThread(QThread):
             exp+=1
 
         self.weighted_roc = round(self.weighted_roc,2)
-        print("Previous RoC",self.window.roc_temp)
+        # print("Previous RoC",self.window.roc_temp)
 
-        print("Weighted RoC",self.weighted_roc)
+        # print("Weighted RoC",self.weighted_roc)
 
         self.window.roc_temp = self.weighted_roc
 
@@ -133,6 +133,6 @@ class RoCSmoothingThread(QThread):
             output = medfilt(median_ar, int(self.window.kernel_size))
             # print("This is output: " , output)
             temp = round(output[-1], 2)
-            print("Previous RoC", self.window.roc_temp)
-            print("Filtered Temp", output[-1])
+            # print("Previous RoC", self.window.roc_temp)
+            # print("Filtered Temp", output[-1])
             self.window.roc_temp = output[-1]
