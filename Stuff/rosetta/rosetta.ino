@@ -18,8 +18,8 @@ DeviceAddress insideThermometer, outsideThermometer, middleThermometer;
 
 
 
-float array [] = {200,199.75,199.5,199,198.5,198,197.75,197.5,197.25,197,196.75,196.5,196.25,196,195.75,195.5,195.25,195,194.75,194.5,194.25,194,194.5,194.75,195,195.25,195.5,195.75,196,196.5,196.75,197,197.25,197.5,197.75,198,198.25,198.5,198.75,199,199.25,199.5,199.75,200};
-float counter = 0;
+float array [120];
+int counter = 0;
 float adjustment_counter = 0.25;
 float counter_counter = 0;
 
@@ -39,6 +39,7 @@ void setup(void)
 
   // Start up the library
   //sensors.begin();
+  populate();
   delay(2000);
 
 //   while(counter < 10){
@@ -84,7 +85,13 @@ void printResolution(DeviceAddress deviceAddress)
   Serial.println();    
 }
 
+void populate(void){
+  array[0] = 100;
+  for (int i = 1; i < 120; i++){
+    array[i] = array[i-1] + 0.25 + float(random(-20, 10))/100.0;
+  }
 
+}
 
 void loop(void)
 { 
@@ -95,22 +102,29 @@ void loop(void)
 ////        Serial.println(exp_smoothing_filter.Current());
 //        delay(900);
 //   }
-    Serial.println(counter);
-    if (counter < 200){
-//      counter = counter +float(ran`dom(-50, 100))/100.0;
-        if (counter_counter > 119){
-          adjustment_counter = adjustment_counter +0.25;
-          counter_counter =0;
-        }
-
-        counter = counter + adjustment_counter; //+ +float(random(-10, 10))/100.0;
-        counter_counter +=1;
-    }else{
-      counter = 30;
+//    Serial.println(counter);
+//    if (counter < 200){
+////      counter = counter +float(ran`dom(-50, 100))/100.0;
+//        if (counter_counter > 119){
+//          adjustment_counter = adjustment_counter +0.25;
+//          counter_counter =0;
+//        }
+//
+//        counter = counter + adjustment_counter; //+ +float(random(-10, 10))/100.0;
+//        counter_counter +=1;
+//    }else{
+//      counter = 30;
+//    }
+    // #####ASSUMED DELAY OF 
+    if (counter > 119){
+      counter =0;
     }
+    Serial.println(array[counter]);
+    counter +=1;
+
     
-    delay(750);
-    delay(250);
+    delay(1000);
+//    delay(95);
   
 
     

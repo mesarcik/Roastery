@@ -52,9 +52,6 @@ class TempSmoothingThread(QThread):
 
     ####################################
     def savgol_temp(self):
-
-        # Create a temporary data array with the new roc data appended.
-
         roc_d = copy.deepcopy(self.window.temp_data)
 
         sav_ar = roc_d[-self.window.temp_window_size:]
@@ -65,7 +62,7 @@ class TempSmoothingThread(QThread):
             pass
         else:
             # Smooth the values.
-            yhat = savgol_filter(sav_ar, self.window.temp_window_size, 3)  # window size 51, polynomial order 3
+            yhat = savgol_filter(sav_ar, self.window.temp_window_size, self.window.poly_order)  # window size 51, polynomial order 3
 
             # pop the last value off and set that as the incomming temperature value.
             # print("Previous Temp", self.window.line)

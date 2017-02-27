@@ -50,6 +50,11 @@ class Window(QtGui.QMainWindow):
         super(Window, self).__init__(parent)
         # self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
+        #Temporary counter to optimize sal gol
+        self.poly_order = 4
+
+        self.preventive_counter = 0
+
 
         #ENSURE RESET OF SERIAL PORT FOLLOWS
         atexit.register(self.quit)
@@ -561,13 +566,34 @@ class Window(QtGui.QMainWindow):
         if (self.elapsed > 1):
             print("Elapsed Time: " + str(self.elapsed))
 
+        self.line = self.arduino.arduino.readline()
         if (self.line == ""):
             self.line  = self.temp_data[-1]
-
-        self.line = self.arduino.arduino.readline()
+        else:
+            self.line = float(self.line)
         self.first = True
-        # print("This is line: ", self.line)
-        # try:
+
+        std_dev = np.std(self.temp_data)
+        prev = self.temp_data[-1]
+        if self.preventive_counter > 10:
+            print("___________________________________________")
+            print("This is line: " , self.line)
+            print("___________________________________________")
+            print ("This is std dev ",std_dev)
+            print("___________________________________________")
+            print("This is previous: ", prev)
+            print("___________________________________________")
+
+
+            ###############ENSURE NEXT TEMPERATURE READING IS WITHIN 2 STD OF MEAN.
+            if(self.line < prev +4*std_dev) and (self.line > prev - 4*std_dev):
+                pass
+            else:
+                self.line  = self.temp_data[-1]
+            #########################################################################
+
+
+
         self.line = round(float(self.line), 2)
         # except:
         #     exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -616,11 +642,13 @@ class Window(QtGui.QMainWindow):
 
         self.s_time = time.time()
         # time.sleep()
+        self.preventive_counter+=1
 
 
     def update(self):
         thread = threading.Thread(target=self.updaterThread, args=())
         thread.start()
+        thread.join()
 
 
     def onTempSmoothFinished(self):
